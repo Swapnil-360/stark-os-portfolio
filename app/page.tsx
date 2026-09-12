@@ -1177,13 +1177,13 @@ export default function CleanGlassPortfolio() {
                   })}
                   initialIndex={0}
                   maxVisible={3}
-                  cardWidth={440}
-                  cardHeight={310}
-                  overlap={0.52}
-                  spreadDeg={16}
-                  depthPx={70}
-                  tiltXDeg={4}
-                  activeLiftPx={14}
+                  cardWidth={520}
+                  cardHeight={295}
+                  overlap={0.48}
+                  spreadDeg={14}
+                  depthPx={60}
+                  tiltXDeg={3}
+                  activeLiftPx={12}
                   autoAdvance={false}
                   showDots
                   onCardClick={(item, state) => {
@@ -1209,21 +1209,27 @@ export default function CleanGlassPortfolio() {
                             : "border-white/15 shadow-[0_10px_30px_rgba(0,0,0,0.8)] cursor-pointer hover:border-white/30"
                         }`}
                       >
-                        {/* Background Thumbnail Image */}
-                        <div className="absolute inset-0">
+                        {/* Background Thumbnail Image - Full Actual Image */}
+                        <div className="absolute inset-0 bg-[#07080c] flex items-center justify-center overflow-hidden">
+                          {/* Ambient Blurred Backdrop for seamless ratio coverage */}
+                          <img
+                            src={heroImg}
+                            alt=""
+                            className="absolute inset-0 h-full w-full object-cover blur-xl scale-110 opacity-30 pointer-events-none"
+                            draggable={false}
+                            aria-hidden="true"
+                          />
+                          {/* Full Actual Image - 100% visible, uncropped */}
                           <img
                             src={heroImg}
                             alt={item.title}
-                            className="h-full w-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
+                            className="relative z-0 w-full h-full object-contain transition-transform duration-500 group-hover:scale-[1.02]"
                             draggable={false}
                           />
                         </div>
 
-                        {/* Rich Vignette Gradient */}
-                        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/95 via-black/45 to-transparent" />
-
                         {/* Top Badges */}
-                        <div className="relative z-10 p-3.5 sm:p-4 flex items-center justify-between pointer-events-auto">
+                        <div className="relative z-10 p-3 sm:p-4 flex items-center justify-between pointer-events-auto">
                           {proj?.featured ? (
                             <span className="px-2.5 py-0.5 rounded-full bg-accent text-white text-[9px] font-mono font-bold shadow-[0_0_10px_rgba(255,30,56,0.6)]">
                               FEATURED
@@ -1231,7 +1237,7 @@ export default function CleanGlassPortfolio() {
                           ) : <div />}
 
                           {proj?.status && (
-                            <span className="px-3 py-1 rounded-full bg-black/70 backdrop-blur-md border border-white/20 text-[11px] font-mono text-white/90 shadow-md">
+                            <span className="px-3 py-1 rounded-full bg-black/75 backdrop-blur-md border border-white/20 text-[11px] font-mono text-white/90 shadow-md">
                               {proj.status === "Live" ? "● Live System" : proj.status}
                             </span>
                           )}
@@ -1242,33 +1248,34 @@ export default function CleanGlassPortfolio() {
                           <div className="absolute inset-x-0 bottom-0 h-1 bg-gradient-to-r from-amber-500 via-accent to-rose-600 shadow-[0_0_15px_rgba(255,30,56,0.9)] z-20" />
                         )}
 
-                        {/* Bottom Card Content */}
-                        <div className="relative z-10 p-3 sm:p-5 flex flex-col justify-end gap-1.5 sm:gap-2">
-                          <div>
-                            <h3 className="text-base sm:text-xl font-black text-white tracking-tight leading-snug drop-shadow-md group-hover:text-accent transition-colors">
-                              {item.title}
-                            </h3>
-                            <p className="text-[10px] sm:text-[11px] font-mono uppercase tracking-wider text-gray-300 mt-0.5 line-clamp-1">
-                              {proj?.subtitle || proj?.shortDescription}
-                            </p>
-                          </div>
+                        {/* Bottom Card Sleek Frosted Glass Info Bar */}
+                        <div className="relative z-10 p-2 sm:p-3 pointer-events-auto">
+                          <div className="bg-black/75 backdrop-blur-md rounded-xl p-2 sm:p-2.5 border border-white/15 flex items-center justify-between gap-2 shadow-2xl">
+                            <div className="min-w-0 pr-1">
+                              <div className="flex items-center gap-1.5">
+                                <h3 className="text-xs sm:text-sm font-black text-white tracking-tight leading-none truncate group-hover:text-accent transition-colors">
+                                  {item.title}
+                                </h3>
+                                <span className="px-1.5 py-0.5 rounded-full bg-white/10 text-[8px] sm:text-[9px] font-mono text-gray-300 font-medium shrink-0">
+                                  {proj?.categoryLabel || "Production"}
+                                </span>
+                              </div>
+                              <p className="text-[9px] sm:text-[10px] font-mono text-gray-400 truncate mt-0.5">
+                                {proj?.subtitle || proj?.shortDescription}
+                              </p>
+                            </div>
 
-                          <div className="flex items-center justify-between pt-1">
-                            <span className="px-2.5 sm:px-3 py-0.5 sm:py-1 rounded-full bg-black/65 backdrop-blur-md border border-white/15 text-[10px] sm:text-xs text-gray-200 font-medium">
-                              {proj?.categoryLabel || "Production"}
-                            </span>
-
-                            <div className="flex items-center gap-2">
+                            <div className="flex items-center gap-1 shrink-0">
                               {proj?.liveUrl && (
                                 <a
                                   href={proj.liveUrl}
                                   target="_blank"
                                   rel="noopener noreferrer"
                                   onClick={(e) => e.stopPropagation()}
-                                  className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 border border-white/20 text-white flex items-center justify-center transition hover:scale-105"
+                                  className="w-7 h-7 rounded-full bg-white/10 hover:bg-accent border border-white/20 hover:border-accent text-white flex items-center justify-center transition hover:scale-105 shadow cursor-pointer"
                                   title="Open Live Website"
                                 >
-                                  <ExternalLink className="w-3.5 h-3.5" />
+                                  <ExternalLink className="w-3 h-3" />
                                 </a>
                               )}
                               <button
@@ -1277,10 +1284,10 @@ export default function CleanGlassPortfolio() {
                                   e.stopPropagation();
                                   if (proj) setSelectedProject(proj);
                                 }}
-                                className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-white/15 hover:bg-accent border border-white/25 hover:border-accent text-white flex items-center justify-center transition-all duration-300 hover:scale-110 shadow-lg cursor-pointer group/btn"
+                                className="w-7 h-7 rounded-full bg-white/15 hover:bg-accent border border-white/25 hover:border-accent text-white flex items-center justify-center transition-all duration-300 hover:scale-110 shadow cursor-pointer group/btn"
                                 title="View Full Details"
                               >
-                                <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-0.5 transition-transform" />
+                                <ArrowRight className="w-3.5 h-3.5 group-hover/btn:translate-x-0.5 transition-transform" />
                               </button>
                             </div>
                           </div>
@@ -1303,12 +1310,18 @@ export default function CleanGlassPortfolio() {
                   className="rounded-2xl overflow-hidden bg-white/5 border border-white/10 hover:border-accent/60 transition-all duration-300 flex flex-col justify-between group shadow-lg cursor-pointer"
                 >
                   {/* Image */}
-                  <div className="relative w-full h-48 bg-black/60 overflow-hidden">
+                  <div className="relative w-full aspect-video bg-[#08090d] overflow-hidden flex items-center justify-center">
+                    <img
+                      src={heroImg}
+                      alt=""
+                      className="absolute inset-0 w-full h-full object-cover blur-lg scale-110 opacity-30 pointer-events-none"
+                      aria-hidden="true"
+                    />
                     <Image
                       src={heroImg}
                       alt={proj.title}
                       fill
-                      className="object-cover object-top group-hover:scale-105 transition-transform duration-500"
+                      className="object-contain group-hover:scale-105 transition-transform duration-500"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent pointer-events-none" />
 

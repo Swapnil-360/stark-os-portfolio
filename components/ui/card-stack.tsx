@@ -91,8 +91,8 @@ export function CardStack<T extends CardStackItem>({
   initialIndex = 0,
   maxVisible = 3,
 
-  cardWidth = 440,
-  cardHeight = 310,
+  cardWidth = 520,
+  cardHeight = 295,
 
   overlap = 0.52,
   spreadDeg = 16,
@@ -143,10 +143,10 @@ export function CardStack<T extends CardStackItem>({
 
   const isMobile = containerWidth < 640;
   const effectiveCardWidth = isMobile
-    ? Math.min(cardWidth, Math.max(260, containerWidth - 48))
+    ? Math.min(cardWidth, Math.max(280, containerWidth - 36))
     : cardWidth;
   const effectiveCardHeight = isMobile
-    ? Math.min(cardHeight, Math.round(effectiveCardWidth * 0.72))
+    ? Math.round(effectiveCardWidth * (9 / 16))
     : cardHeight;
   const effectiveSpacing = isMobile
     ? Math.round(effectiveCardWidth * 0.22)
