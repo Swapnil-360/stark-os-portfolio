@@ -208,6 +208,34 @@ function settingsToDb(s: SiteSettings): Record<string, any> {
   };
 }
 
+function educationFromDb(row: Record<string, any>): Education {
+  const parseJsonArray = (val: any, fallback: any[]) => {
+    if (Array.isArray(val) && val.length > 0) return val;
+    if (typeof val === "string") {
+      try {
+        const parsed = JSON.parse(val);
+        if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+      } catch {}
+    }
+    return fallback;
+  };
+
+  return {
+    ...INITIAL_EDUCATION,
+    id: row.id || INITIAL_EDUCATION.id,
+    degree: row.degree || INITIAL_EDUCATION.degree,
+    institution: row.institution || INITIAL_EDUCATION.institution,
+    period: row.period || INITIAL_EDUCATION.period,
+    location: row.location || INITIAL_EDUCATION.location,
+    description: row.description || row.field || INITIAL_EDUCATION.description,
+    coursework: parseJsonArray(row.coursework, INITIAL_EDUCATION.coursework),
+    researchInterests: parseJsonArray(
+      row.research_interests ?? row.researchInterests,
+      INITIAL_EDUCATION.researchInterests
+    ),
+  };
+}
+
 // ─── Broadcast helpers ───────────────────────────────────────────────────────
 
 function broadcastDataChange(key: string, data: any) {
@@ -261,7 +289,7 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
 
         try {
           const { data } = await supabase.from("education").select("*").eq("id", "default_education").single();
-          if (data) setEducation(data);
+          if (data) setEducation(educationFromDb(data));
         } catch (e) { console.warn("education fetch failed:", e); }
 
         try {
@@ -299,7 +327,11 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
         const storedExp = localStorage.getItem(STORAGE_KEYS.EXPERIENCES);
         if (storedExp) setExperiences(JSON.parse(storedExp));
         const storedEdu = localStorage.getItem(STORAGE_KEYS.EDUCATION);
-        if (storedEdu) setEducation(JSON.parse(storedEdu));
+        if (storedEdu) {
+          try {
+            setEducation(educationFromDb(JSON.parse(storedEdu)));
+          } catch {}
+        }
         const storedSrv = localStorage.getItem(STORAGE_KEYS.SERVICES);
         if (storedSrv) setServices(JSON.parse(storedSrv));
         const storedSkills = localStorage.getItem(STORAGE_KEYS.SKILLS);

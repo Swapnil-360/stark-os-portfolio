@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useData } from "@/context/DataContext";
 import { useTheme } from "@/context/ThemeContext";
 import { Project } from "@/types/portfolio";
+import { INITIAL_EDUCATION, INITIAL_SKILL_CATEGORIES, INITIAL_SERVICES } from "@/lib/initialData";
 import ProjectModal from "@/components/projects/ProjectModal";
 import { CardStack, CardStackItem } from "@/components/ui/card-stack";
 import confetti from "canvas-confetti";
@@ -885,7 +886,7 @@ export default function CleanGlassPortfolio() {
                     Academic Research & Exploration
                   </div>
                   <div className="space-y-2">
-                    {education.researchInterests.map((r, idx) => (
+                    {(education?.researchInterests && education.researchInterests.length > 0 ? education.researchInterests : INITIAL_EDUCATION.researchInterests || []).map((r, idx) => (
                       <div key={idx} className="p-3 rounded-xl bg-black/40 border border-white/5">
                         <div className="font-semibold text-xs text-white">{r.title}</div>
                         <div className="text-[11px] text-gray-400 mt-1">{r.description}</div>
@@ -934,7 +935,7 @@ export default function CleanGlassPortfolio() {
                     Engineering Coursework
                   </div>
                   <div className="flex flex-wrap gap-1.5 text-[11px]">
-                    {education.coursework.map((c, i) => (
+                    {(education?.coursework && education.coursework.length > 0 ? education.coursework : INITIAL_EDUCATION.coursework || []).map((c, i) => (
                       <span key={i} className="px-2.5 py-1 rounded-lg bg-black/40 border border-white/10 text-gray-300">
                         {c}
                       </span>
@@ -971,14 +972,14 @@ export default function CleanGlassPortfolio() {
 
             {/* Skills Categories Grid */}
             <div className="grid md:grid-cols-2 gap-6">
-              {skills.map((grp, idx) => (
+              {(skills && skills.length > 0 ? skills : INITIAL_SKILL_CATEGORIES).map((grp, idx) => (
                 <div key={idx} className="p-5 rounded-2xl bg-white/5 border border-white/10 space-y-3">
                   <div className="flex items-center gap-2 text-xs text-accent uppercase font-bold border-b border-white/10 pb-2">
                     <Cpu className="w-4 h-4" />
                     <span>{grp.category}</span>
                   </div>
                   <div className="flex flex-wrap gap-2">
-                    {grp.skills.map((s, sIdx) => (
+                    {(grp?.skills || []).map((s, sIdx) => (
                       <span
                         key={sIdx}
                         className={`px-3 py-1.5 rounded-xl text-xs font-medium border ${
@@ -1001,7 +1002,7 @@ export default function CleanGlassPortfolio() {
                 Core Execution Modules
               </div>
               <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3">
-                {services.map((srv) => (
+                {(services && services.length > 0 ? services : INITIAL_SERVICES).map((srv) => (
                   <div
                     key={srv.id}
                     className="p-4 rounded-2xl bg-white/5 border border-white/10 space-y-1 hover:border-accent/60 transition-colors"

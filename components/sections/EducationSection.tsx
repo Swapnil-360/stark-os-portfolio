@@ -69,7 +69,7 @@ export default function EducationSection() {
                 <span>CORE ENGINEERING COURSEWORK</span>
               </div>
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
-                {education.coursework.map((course, idx) => (
+                {(education?.coursework || []).map((course, idx) => (
                   <div
                     key={idx}
                     className="p-2.5 bg-background border border-white/5 hover:border-hud rounded-sm font-mono text-xs text-muted hover:text-foreground transition-all flex items-center gap-2"
