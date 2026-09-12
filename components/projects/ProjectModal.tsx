@@ -3,6 +3,7 @@
 import React, { useEffect } from "react";
 import Image from "next/image";
 import { Project } from "@/types/portfolio";
+import { getProjectThumbnail } from "@/lib/projectUtils";
 import HudButton from "../ui/HudButton";
 import HudBadge from "../ui/HudBadge";
 import {
@@ -95,11 +96,7 @@ export default function ProjectModal({
           {/* Hero Banner Visual */}
           <div className="relative w-full h-48 sm:h-80 md:h-96 rounded-sm overflow-hidden border border-hud bg-black">
             <Image
-              src={
-                (project.id === "proj-2" || project.slug === "edu51five")
-                  ? "/images/projects/edu51_real.jpeg"
-                  : (project.heroImage || "/images/background_ref.png")
-              }
+              src={getProjectThumbnail(project)}
               alt={project.title}
               fill
               className="object-cover object-top"

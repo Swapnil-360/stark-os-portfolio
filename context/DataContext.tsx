@@ -22,6 +22,7 @@ import {
   INITIAL_SOCIAL_LINKS,
 } from "@/lib/initialData";
 import { supabase, isSupabaseConfigured } from "@/lib/supabase/client";
+import { getProjectThumbnail } from "@/lib/projectUtils";
 
 interface DataContextType {
   hero: HeroConfig;
@@ -135,6 +136,13 @@ function heroToDb(hero: HeroConfig): Record<string, any> {
 }
 
 function projectFromDb(row: Record<string, any>): Project {
+  const heroImage = getProjectThumbnail({
+    heroImage: row.thumbnail_url,
+    slug: row.slug,
+    id: row.id,
+    title: row.title,
+  });
+
   return {
     id: row.id,
     slug: row.slug,
@@ -144,7 +152,7 @@ function projectFromDb(row: Record<string, any>): Project {
     categoryLabel: row.category ?? "",
     shortDescription: row.description ?? "",
     fullDescription: row.description ?? "",
-    heroImage: row.thumbnail_url ?? "",
+    heroImage,
     gallery: Array.isArray(row.gallery) ? row.gallery : [],
     technologies: Array.isArray(row.tags) ? row.tags : [],
     liveUrl: row.live_url,

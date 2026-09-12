@@ -10,6 +10,7 @@ import HudBadge from "@/components/ui/HudBadge";
 import HudCard from "@/components/ui/HudCard";
 import TopNav from "@/components/navigation/TopNav";
 import Footer from "@/components/sections/Footer";
+import { getProjectThumbnail } from "@/lib/projectUtils";
 import {
   ArrowLeft,
   ExternalLink,
@@ -114,11 +115,7 @@ export default function ProjectDetailPage() {
         {/* Hero Banner Visual */}
         <div className="relative w-full h-64 sm:h-[450px] rounded-sm overflow-hidden border border-hud bg-black shadow-hud-card">
           <Image
-            src={
-              (project.id === "proj-2" || project.slug === "edu51five")
-                ? "/images/projects/edu51_real.jpeg"
-                : (project.heroImage || "/images/background_ref.png")
-            }
+            src={getProjectThumbnail(project)}
             alt={project.title}
             fill
             priority

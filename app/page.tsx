@@ -9,6 +9,7 @@ import { Project } from "@/types/portfolio";
 import { INITIAL_EDUCATION, INITIAL_SKILL_CATEGORIES, INITIAL_SERVICES } from "@/lib/initialData";
 import ProjectModal from "@/components/projects/ProjectModal";
 import { CardStack, CardStackItem } from "@/components/ui/card-stack";
+import { getProjectThumbnail } from "@/lib/projectUtils";
 import confetti from "canvas-confetti";
 import {
   Home,
@@ -90,6 +91,7 @@ export default function CleanGlassPortfolio() {
 
   // Device detection on mount: mobile users default to mobile collection, desktop to desktop collection.
   // Unknown users default to static background.
+  // Restore cached user video stream selection.
   useEffect(() => {
     if (typeof window !== "undefined") {
       const isMobile = window.innerWidth < 640;
@@ -102,22 +104,45 @@ export default function CleanGlassPortfolio() {
         } else {
           setVideoActive(false); // Unknown user defaults to static wallpaper
         }
+
+        const cachedDesktopVid = localStorage.getItem("swapnil_user_selected_desktop_video");
+        if (cachedDesktopVid) {
+          setSelectedVideoUrl(cachedDesktopVid);
+        }
+        const cachedMobileVid = localStorage.getItem("swapnil_user_selected_mobile_video");
+        if (cachedMobileVid) {
+          setSelectedMobileVideoUrl(cachedMobileVid);
+        }
       } catch {
         setVideoActive(false);
       }
     }
   }, []);
 
-  // Keep selected video synchronized if updated in admin panel
+  // Keep selected video synchronized if updated in admin panel and user has not chosen their own video
   useEffect(() => {
     if (hero.videoUrl) {
-      setSelectedVideoUrl(hero.videoUrl);
+      try {
+        const userSelected = localStorage.getItem("swapnil_user_selected_desktop_video");
+        if (!userSelected) {
+          setSelectedVideoUrl(hero.videoUrl);
+        }
+      } catch {
+        setSelectedVideoUrl(hero.videoUrl);
+      }
     }
   }, [hero.videoUrl]);
 
   useEffect(() => {
     if (hero.mobileVideoUrl) {
-      setSelectedMobileVideoUrl(hero.mobileVideoUrl);
+      try {
+        const userSelected = localStorage.getItem("swapnil_user_selected_mobile_video");
+        if (!userSelected) {
+          setSelectedMobileVideoUrl(hero.mobileVideoUrl);
+        }
+      } catch {
+        setSelectedMobileVideoUrl(hero.mobileVideoUrl);
+      }
     }
   }, [hero.mobileVideoUrl]);
 
@@ -569,8 +594,8 @@ export default function CleanGlassPortfolio() {
                     {(videoCategoryTab === "desktop" ? desktopVideoOptions : mobileVideoOptions).map((v) => {
                       const isSelected =
                         videoCategoryTab === "desktop"
-                          ? (selectedVideoUrl === v.url || (hero.selectedVideoId === v.id && !selectedVideoUrl))
-                          : (selectedMobileVideoUrl === v.url || (hero.selectedMobileVideoId === v.id && !selectedMobileVideoUrl));
+                          ? selectedVideoUrl === v.url
+                          : selectedMobileVideoUrl === v.url;
 
                       return (
                         <button
@@ -579,8 +604,14 @@ export default function CleanGlassPortfolio() {
                           onClick={() => {
                             if (videoCategoryTab === "desktop") {
                               setSelectedVideoUrl(v.url);
+                              try {
+                                localStorage.setItem("swapnil_user_selected_desktop_video", v.url);
+                              } catch {}
                             } else {
                               setSelectedMobileVideoUrl(v.url);
+                              try {
+                                localStorage.setItem("swapnil_user_selected_mobile_video", v.url);
+                              } catch {}
                             }
                             setVideoActive(true);
                             try { localStorage.setItem("swapnil_user_video_active", "true"); } catch {}
@@ -1134,8 +1165,7 @@ export default function CleanGlassPortfolio() {
               <div className="py-1">
                 <CardStack
                   items={filteredProjects.map((p) => {
-                    const isEdu51 = p.id === "proj-2" || p.slug === "edu51five";
-                    const heroImg = isEdu51 ? "/images/projects/edu51_real.jpeg" : (p.heroImage || "/images/background_ref.png");
+                    const heroImg = getProjectThumbnail(p);
                     return {
                       id: p.id,
                       title: p.title,
@@ -1164,8 +1194,7 @@ export default function CleanGlassPortfolio() {
                   }}
                   renderCard={(item, { active: isActive }) => {
                     const proj = projects.find((p) => p.id === item.id);
-                    const isEdu51 = proj?.id === "proj-2" || proj?.slug === "edu51five";
-                    const heroImg = isEdu51 ? "/images/projects/edu51_real.jpeg" : (item.imageSrc || "/images/background_ref.png");
+                    const heroImg = getProjectThumbnail(proj) || item.imageSrc;
 
                     return (
                       <div
@@ -1265,8 +1294,7 @@ export default function CleanGlassPortfolio() {
               /* Projects Grid */
               <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {filteredProjects.map((proj) => {
-                const isEdu51 = proj.id === "proj-2" || proj.slug === "edu51five";
-                const heroImg = isEdu51 ? "/images/projects/edu51_real.jpeg" : (proj.heroImage || "/images/background_ref.png");
+                const heroImg = getProjectThumbnail(proj);
 
                 return (
                 <div
