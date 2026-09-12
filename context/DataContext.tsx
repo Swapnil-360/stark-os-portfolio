@@ -91,7 +91,7 @@ function heroFromDb(row: Record<string, any>): HeroConfig {
     mobileFallbackUrl: row.mobile_fallback_url ?? INITIAL_HERO.mobileFallbackUrl,
     staticDesktopBg: row.static_desktop_bg ?? INITIAL_HERO.staticDesktopBg,
     staticMobileBg: row.static_mobile_bg ?? INITIAL_HERO.staticMobileBg,
-    portraitUrl: row.portrait_url ?? INITIAL_HERO.portraitUrl,
+    portraitUrl: (row.portrait_url && row.portrait_url !== "/images/background_ref.png") ? row.portrait_url : "/images/pfp.png",
     resumeUrl: row.resume_url ?? INITIAL_HERO.resumeUrl,
     videoSpeed: row.video_speed !== undefined && row.video_speed !== null ? Number(row.video_speed) : INITIAL_HERO.videoSpeed,
     overlayOpacity: row.overlay_opacity !== undefined && row.overlay_opacity !== null ? Number(row.overlay_opacity) : INITIAL_HERO.overlayOpacity,

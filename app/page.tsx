@@ -798,7 +798,7 @@ export default function CleanGlassPortfolio() {
               <div className="relative w-48 h-48 sm:w-64 sm:h-64 md:w-80 md:h-80 lg:w-[22rem] lg:h-[22rem] xl:w-[25rem] xl:h-[25rem] aspect-square rounded-full border border-white/20 hover:border-accent/60 bg-black/40 backdrop-blur-md shadow-2xl shadow-black/80 p-2 sm:p-3 group transition-all duration-500 hover:shadow-[0_0_35px_rgba(255,30,56,0.35)] shrink-0">
                 <div className="relative w-full h-full rounded-full overflow-hidden bg-black/60 border border-white/10">
                   <Image
-                    src={hero.portraitUrl || "/images/pfp.png"}
+                    src="/images/pfp.png"
                     alt={hero.name || "Md. Miftahur Rahman Swapnil"}
                     fill
                     sizes="(max-width: 768px) 200px, 400px"
