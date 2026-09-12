@@ -1,0 +1,26 @@
+{
+  "name": "Md. Miftahur Rahman Swapnil | Portfolio",
+  "short_name": "Swapnil OS",
+  "description": "Cinematic sci-fi command interface portfolio of Md. Miftahur Rahman Swapnil.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#05070c",
+  "theme_color": "#ef4444",
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "16x16 32x32 48x48 64x64",
+      "type": "image/x-icon"
+    },
+    {
+      "src": "/icon.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "/images/icon-512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ]
+}

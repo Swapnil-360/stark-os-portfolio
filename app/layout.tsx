@@ -30,7 +30,13 @@ export const metadata: Metadata = {
     siteName: "Swapnil Command System",
     images: [
       {
-        url: "/images/theme.png",
+        url: "https://mrswapnil.me/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Swapnil Portfolio HUD Preview",
+      },
+      {
+        url: "https://mrswapnil.me/og-image.jpg",
         width: 1200,
         height: 630,
         alt: "Swapnil Portfolio HUD Preview",
@@ -43,11 +49,19 @@ export const metadata: Metadata = {
     description:
       "Cinematic sci-fi command interface portfolio of Md. Miftahur Rahman Swapnil.",
     creator: "@thomascryptoxx",
-    images: ["/images/theme.png"],
+    images: ["https://mrswapnil.me/og-image.png"],
   },
   icons: {
-    icon: "/favicon.ico",
+    icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/icon.png", type: "image/png", sizes: "192x192" },
+    ],
+    shortcut: "/favicon.ico",
+    apple: [
+      { url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
+    ],
   },
+  manifest: "/manifest.json",
 };
 
 export default function RootLayout({
