@@ -15,7 +15,7 @@ export const INITIAL_HERO: HeroConfig = {
   mobileFallbackUrl: "/images/bg_static_mobile.jpg",
   staticDesktopBg: "/images/bg_static_desktop.jpg",
   staticMobileBg: "/images/bg_static_mobile.jpg",
-  videoEnabled: true,
+  videoEnabled: false,
   videoSpeed: 1.0,
   overlayOpacity: 0.35,
   blurAmount: 0,

@@ -76,7 +76,7 @@ export default function CleanGlassPortfolio() {
   const [projectsViewMode, setProjectsViewMode] = useState<"stack" | "grid">("stack");
   const [themeDropdownOpen, setThemeDropdownOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [videoActive, setVideoActive] = useState(true);
+  const [videoActive, setVideoActive] = useState(false);
   const [videoDropdownOpen, setVideoDropdownOpen] = useState(false);
   const [selectedVideoUrl, setSelectedVideoUrl] = useState<string>(
     hero.videoUrl || "/videos/bg_video.mp4"
@@ -86,6 +86,26 @@ export default function CleanGlassPortfolio() {
   );
   const [videoCategoryTab, setVideoCategoryTab] = useState<"desktop" | "mobile">("desktop");
   const [marqueeMode, setMarqueeMode] = useState<"tech" | "icons">("tech");
+
+  // Device detection on mount: mobile users default to mobile collection, desktop to desktop collection.
+  // Unknown users default to static background.
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const isMobile = window.innerWidth < 640;
+      setVideoCategoryTab(isMobile ? "mobile" : "desktop");
+
+      try {
+        const userPref = localStorage.getItem("swapnil_user_video_active");
+        if (userPref !== null) {
+          setVideoActive(userPref === "true");
+        } else {
+          setVideoActive(false); // Unknown user defaults to static wallpaper
+        }
+      } catch {
+        setVideoActive(false);
+      }
+    }
+  }, []);
 
   // Keep selected video synchronized if updated in admin panel
   useEffect(() => {
@@ -116,12 +136,26 @@ export default function CleanGlassPortfolio() {
   const toggleVideo = () => {
     setVideoActive((prev) => {
       const next = !prev;
+      try {
+        localStorage.setItem("swapnil_user_video_active", String(next));
+      } catch {}
       [videoRef.current, mobileVideoRef.current].forEach((v) => {
         if (v) {
           if (next) v.play().catch(() => {});
           else v.pause();
         }
       });
+      return next;
+    });
+  };
+
+  const toggleVideoDropdown = () => {
+    setVideoDropdownOpen((prev) => {
+      const next = !prev;
+      if (next && typeof window !== "undefined") {
+        const isMobile = window.innerWidth < 640;
+        setVideoCategoryTab(isMobile ? "mobile" : "desktop");
+      }
       return next;
     });
   };
@@ -406,7 +440,7 @@ export default function CleanGlassPortfolio() {
           {/* Circular Video Dropdown Switcher (Toggle Live Motion vs Static + Select Video Stream) */}
           <div className="relative">
             <button
-              onClick={() => setVideoDropdownOpen(!videoDropdownOpen)}
+              onClick={toggleVideoDropdown}
               className={`w-9 h-9 sm:w-10 sm:h-10 rounded-full border flex items-center justify-center transition-all shadow-lg cursor-pointer backdrop-blur-md ${
                 videoActive
                   ? "border-accent/80 bg-accent/20 text-accent hover:bg-accent hover:text-white"
@@ -467,6 +501,7 @@ export default function CleanGlassPortfolio() {
                     type="button"
                     onClick={() => {
                       setVideoActive(false);
+                      try { localStorage.setItem("swapnil_user_video_active", "false"); } catch {}
                       setVideoDropdownOpen(false);
                     }}
                     className={`w-full text-left p-2 rounded-xl text-xs flex items-center justify-between gap-2 transition-all cursor-pointer ${
@@ -540,6 +575,7 @@ export default function CleanGlassPortfolio() {
                               setSelectedMobileVideoUrl(v.url);
                             }
                             setVideoActive(true);
+                            try { localStorage.setItem("swapnil_user_video_active", "true"); } catch {}
                             setVideoDropdownOpen(false);
                           }}
                           className={`w-full text-left p-2 rounded-xl text-xs flex items-center justify-between gap-2 transition-all cursor-pointer ${
