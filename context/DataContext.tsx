@@ -63,6 +63,17 @@ const STORAGE_KEYS = {
 // ─── snake_case → camelCase mappers ──────────────────────────────────────────
 
 function heroFromDb(row: Record<string, any>): HeroConfig {
+  const parseJsonArray = (val: any, fallback: any[]) => {
+    if (Array.isArray(val)) return val;
+    if (typeof val === "string") {
+      try {
+        const parsed = JSON.parse(val);
+        if (Array.isArray(parsed)) return parsed;
+      } catch {}
+    }
+    return fallback;
+  };
+
   return {
     name: row.name ?? INITIAL_HERO.name,
     label: row.label ?? INITIAL_HERO.label,
@@ -85,8 +96,8 @@ function heroFromDb(row: Record<string, any>): HeroConfig {
     overlayOpacity: row.overlay_opacity ?? INITIAL_HERO.overlayOpacity,
     blurAmount: row.blur_amount ?? INITIAL_HERO.blurAmount,
     videoEnabled: row.video_enabled ?? INITIAL_HERO.videoEnabled,
-    backgroundVideos: row.background_videos ?? INITIAL_HERO.backgroundVideos,
-    mobileBackgroundVideos: row.mobile_background_videos ?? INITIAL_HERO.mobileBackgroundVideos,
+    backgroundVideos: parseJsonArray(row.background_videos, INITIAL_HERO.backgroundVideos ?? []),
+    mobileBackgroundVideos: parseJsonArray(row.mobile_background_videos, INITIAL_HERO.mobileBackgroundVideos ?? []),
     selectedVideoId: row.selected_video_id ?? INITIAL_HERO.selectedVideoId,
     selectedMobileVideoId: row.selected_mobile_video_id ?? INITIAL_HERO.selectedMobileVideoId,
     locationLabel: row.location_label ?? INITIAL_HERO.locationLabel,
@@ -102,9 +113,7 @@ function heroToDb(hero: HeroConfig): Record<string, any> {
     description: hero.description,
     status_badge: hero.statusBadge,
     cta_primary_text: hero.ctaPrimaryText,
-    cta_primary_link: hero.ctaPrimaryLink,
     cta_secondary_text: hero.ctaSecondaryText,
-    cta_secondary_link: hero.ctaSecondaryLink,
     video_url: hero.videoUrl,
     mobile_video_url: hero.mobileVideoUrl,
     poster_url: hero.posterUrl,
@@ -365,7 +374,10 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
 
     if (isSupabaseConfigured && supabase) {
       try {
-        await supabase.from("hero_config").upsert(heroToDb(updated));
+        const { error } = await supabase.from("hero_config").upsert(heroToDb(updated));
+        if (error) {
+          console.error("Supabase hero update error:", error.message, error.details);
+        }
       } catch (err) { console.error("Supabase hero update error:", err); }
     }
   };
