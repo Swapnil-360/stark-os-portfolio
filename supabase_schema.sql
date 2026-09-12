@@ -408,7 +408,7 @@ INSERT INTO public.projects (
     5,
     'Next-gen web application enabling creators to compose, generate, and master custom audio compositions using modern generative AI models. Integrates visual audio spectrograms and real-time stem extraction.',
     '#a855f7',
-    'https://opusgen.ai/',
+    'https://www.opusgenai.com/',
     'https://github.com/Swapnil-360',
     89,
     '["Next.js","Web Audio API","Python FastAPI","PyTorch","Tailwind CSS"]'::jsonb,

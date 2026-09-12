@@ -161,3 +161,21 @@ export function matchProjectCategory(
 
   return false;
 }
+
+export function normalizeProjectLiveUrl(
+  url?: string | null,
+  slug?: string,
+  title?: string
+): string | undefined {
+  const raw = (url || "").trim();
+  const text = `${raw} ${slug || ""} ${title || ""}`.toLowerCase();
+
+  // If this is OpusGen, ensure canonical domain is https://www.opusgenai.com/
+  if (text.includes("opusgen")) {
+    if (!raw || raw.includes("opusgen.ai") || raw.includes("opusgenai.com")) {
+      return "https://www.opusgenai.com/";
+    }
+  }
+
+  return raw || undefined;
+}

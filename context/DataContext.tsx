@@ -22,7 +22,7 @@ import {
   INITIAL_SOCIAL_LINKS,
 } from "@/lib/initialData";
 import { supabase, isSupabaseConfigured } from "@/lib/supabase/client";
-import { getProjectThumbnail, normalizeProjectCategory } from "@/lib/projectUtils";
+import { getProjectThumbnail, normalizeProjectCategory, normalizeProjectLiveUrl } from "@/lib/projectUtils";
 
 interface DataContextType {
   hero: HeroConfig;
@@ -161,7 +161,7 @@ function projectFromDb(row: Record<string, any>): Project {
     heroImage,
     gallery: Array.isArray(row.gallery) ? row.gallery : [],
     technologies: Array.isArray(row.tags) ? row.tags : [],
-    liveUrl: row.live_url,
+    liveUrl: normalizeProjectLiveUrl(row.live_url, row.slug, row.title),
     githubUrl: row.github_url,
     featured: row.featured ?? false,
     displayOrder: row.display_order ?? 0,
@@ -293,7 +293,20 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
 
         try {
           const { data } = await supabase.from("projects").select("*").order("display_order", { ascending: true });
-          if (data && data.length > 0) { setProjects(data.map(projectFromDb)); dbLoaded = true; }
+          if (data && data.length > 0) {
+            setProjects(data.map(projectFromDb));
+            dbLoaded = true;
+
+            // Self-heal OpusGen live URL if stale in Supabase database
+            const staleOpus = data.find((p: any) =>
+              (p.slug?.includes("opusgen") || p.title?.toLowerCase().includes("opusgen")) &&
+              p.live_url &&
+              (p.live_url.includes("opusgen.ai") || !p.live_url.includes("opusgenai.com"))
+            );
+            if (staleOpus) {
+              supabase.from("projects").update({ live_url: "https://www.opusgenai.com/" }).eq("id", staleOpus.id).then(() => {});
+            }
+          }
         } catch (e) { console.warn("projects fetch failed:", e); }
 
         try {
@@ -337,7 +350,18 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
           setHero({ ...INITIAL_HERO, ...parsed });
         }
         const storedProjects = localStorage.getItem(STORAGE_KEYS.PROJECTS);
-        if (storedProjects) setProjects(JSON.parse(storedProjects));
+        if (storedProjects) {
+          try {
+            const parsed = JSON.parse(storedProjects);
+            if (Array.isArray(parsed)) {
+              setProjects(parsed.map(p => ({
+                ...p,
+                liveUrl: normalizeProjectLiveUrl(p.liveUrl, p.slug, p.title),
+                heroImage: getProjectThumbnail(p),
+              })));
+            }
+          } catch {}
+        }
         const storedExp = localStorage.getItem(STORAGE_KEYS.EXPERIENCES);
         if (storedExp) setExperiences(JSON.parse(storedExp));
         const storedEdu = localStorage.getItem(STORAGE_KEYS.EDUCATION);
