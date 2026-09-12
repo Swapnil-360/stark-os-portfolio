@@ -32,3 +32,12 @@ next-env.d.ts
 # OS metadata
 .DS_Store
 Thumbs.db
+
+.vercel
+
+# Large user-uploaded files (store in Supabase Storage instead)
+public/uploads/videos/*.mp4
+public/uploads/videos/*.webm
+public/videos/*.mp4
+public/videos/*.webm
+public/videos/*.mkv

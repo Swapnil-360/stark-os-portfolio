@@ -5,7 +5,7 @@ import Link from "next/link";
 import { ShieldAlert, ShieldCheck, Lock, ArrowLeft, KeyRound, Mail, AlertTriangle } from "lucide-react";
 
 const AUTHORIZED_EMAIL = "miftahurr503@gmail.com";
-const MASTER_KEY = "SWAPNIL-ADMIN-2026";
+const MASTER_KEY = "swapnil@2026";
 const AUTH_STORAGE_KEY = "swapnil_admin_auth_session_v1";
 
 interface AdminAuthContextType {
@@ -68,10 +68,8 @@ export default function AdminAuthGuard({ children }: { children: React.ReactNode
     }
 
     // Verification 2: Security Passkey validation
-    if (cleanPass !== MASTER_KEY && cleanPass !== "STARK-MK85" && cleanPass !== "admin123") {
-      setErrorMsg(
-        "INVALID SECURITY KEY: Please enter the authorized Stark security passkey (SWAPNIL-ADMIN-2026)."
-      );
+    if (cleanPass !== MASTER_KEY) {
+      setErrorMsg("INVALID SECURITY KEY: Access denied. Please enter the correct passkey.");
       return;
     }
 
@@ -179,7 +177,7 @@ export default function AdminAuthGuard({ children }: { children: React.ReactNode
                 className="w-full px-3.5 py-2.5 bg-[#0a0c12] border border-slate-700/80 rounded-lg text-white placeholder-slate-600 focus:border-red-500 focus:outline-none transition-colors"
               />
               <div className="text-[10px] text-slate-500 text-right">
-                Key: SWAPNIL-ADMIN-2026
+                Contact admin for access key
               </div>
             </div>
 

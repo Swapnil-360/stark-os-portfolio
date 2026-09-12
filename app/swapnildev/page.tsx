@@ -37,14 +37,14 @@ export default function AdminDashboardPage() {
 
         <div className="flex items-center gap-3">
           <Link
-            href="/admin/projects"
+            href="/swapnildev/projects"
             className="flex items-center gap-2 px-3.5 py-2 bg-red-600 hover:bg-red-500 text-white rounded text-xs font-semibold shadow transition-all"
           >
             <Plus className="w-3.5 h-3.5" />
             <span>New Project</span>
           </Link>
           <Link
-            href="/admin/hero"
+            href="/swapnildev/hero"
             className="flex items-center gap-2 px-3.5 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded text-xs font-semibold transition-all border border-slate-700"
           >
             <Video className="w-3.5 h-3.5" />
@@ -114,7 +114,7 @@ export default function AdminDashboardPage() {
             </p>
           </div>
           <Link
-            href="/admin/projects"
+            href="/swapnildev/projects"
             className="text-xs text-red-400 hover:text-red-300 font-mono flex items-center gap-1"
           >
             <span>Manage All</span>
@@ -139,15 +139,15 @@ export default function AdminDashboardPage() {
                 <tr key={proj.id} className="hover:bg-slate-800/30 transition-colors">
                   <td className="p-4 font-sans font-medium text-white">
                     <div className="font-semibold">{proj.title}</div>
-                    <div className="text-slate-400 text-[11px] font-mono">{proj.role}</div>
+                    <div className="text-slate-400 text-[11px] font-mono">{proj.slug}</div>
                   </td>
                   <td className="p-4 text-slate-300 uppercase">{proj.category}</td>
                   <td className="p-4">
                     <span className="px-2 py-0.5 bg-emerald-950/40 border border-emerald-800 text-emerald-400 rounded text-[10px]">
-                      {proj.status}
+                      {proj.featured ? "Featured" : "Active"}
                     </span>
                   </td>
-                  <td className="p-4 text-slate-400">{proj.year}</td>
+                  <td className="p-4 text-slate-400">{proj.displayOrder ?? "—"}</td>
                   <td className="p-4">
                     {proj.featured ? (
                       <span className="text-red-400 font-bold">YES</span>
@@ -166,7 +166,7 @@ export default function AdminDashboardPage() {
                         <ExternalLink className="w-3.5 h-3.5" />
                       </Link>
                       <Link
-                        href="/admin/projects"
+                        href="/swapnildev/projects"
                         className="p-1.5 hover:bg-slate-800 text-slate-400 hover:text-white rounded"
                         title="Edit Project"
                       >
@@ -176,6 +176,7 @@ export default function AdminDashboardPage() {
                   </td>
                 </tr>
               ))}
+
             </tbody>
           </table>
         </div>

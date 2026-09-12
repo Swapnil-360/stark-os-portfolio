@@ -24,17 +24,18 @@ import {
 import { useData } from "@/context/DataContext";
 import { useTheme } from "@/context/ThemeContext";
 import AdminAuthGuard, { useAdminAuth } from "@/components/admin/AdminAuthGuard";
+import { ErrorBoundary } from "@/components/ErrorBoundary";
 
 const ADMIN_NAV_ITEMS = [
-  { href: "/admin", label: "Dashboard", icon: LayoutDashboard },
-  { href: "/admin/hero", label: "Hero & Video", icon: Video },
-  { href: "/admin/projects", label: "Projects CRUD", icon: FolderGit2 },
-  { href: "/admin/media", label: "Media Library", icon: ImageIcon },
-  { href: "/admin/profile", label: "Profile & Bio", icon: User },
-  { href: "/admin/experience", label: "Experience", icon: History },
-  { href: "/admin/skills", label: "Tech Stack", icon: Cpu },
-  { href: "/admin/themes", label: "Themes Tuner", icon: Palette },
-  { href: "/admin/settings", label: "Site Settings & CV", icon: Settings },
+  { href: "/swapnildev", label: "Dashboard", icon: LayoutDashboard },
+  { href: "/swapnildev/hero", label: "Hero & Video", icon: Video },
+  { href: "/swapnildev/projects", label: "Projects CRUD", icon: FolderGit2 },
+  { href: "/swapnildev/media", label: "Media Library", icon: ImageIcon },
+  { href: "/swapnildev/profile", label: "Profile & Bio", icon: User },
+  { href: "/swapnildev/experience", label: "Experience", icon: History },
+  { href: "/swapnildev/skills", label: "Tech Stack", icon: Cpu },
+  { href: "/swapnildev/themes", label: "Themes Tuner", icon: Palette },
+  { href: "/swapnildev/settings", label: "Site Settings & CV", icon: Settings },
 ];
 
 function AdminLayoutInner({ children }: { children: React.ReactNode }) {
@@ -162,8 +163,10 @@ export default function AdminLayout({
   children: React.ReactNode;
 }) {
   return (
-    <AdminAuthGuard>
-      <AdminLayoutInner>{children}</AdminLayoutInner>
-    </AdminAuthGuard>
+    <ErrorBoundary>
+      <AdminAuthGuard>
+        <AdminLayoutInner>{children}</AdminLayoutInner>
+      </AdminAuthGuard>
+    </ErrorBoundary>
   );
 }

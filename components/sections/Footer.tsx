@@ -46,7 +46,7 @@ export default function Footer() {
               </a>
             ))}
             <Link
-              href="/admin"
+              href="/swapnildev"
               className="text-xs font-mono text-accent/80 hover:text-accent flex items-center gap-1 transition-colors"
             >
               <Shield className="w-3.5 h-3.5" /> CMS

@@ -60,15 +60,152 @@ const STORAGE_KEYS = {
   SETTINGS: "swapnil_settings_data_v4",
 };
 
-// Helper to broadcast changes immediately to all open tabs and components
+// ─── snake_case → camelCase mappers ──────────────────────────────────────────
+
+function heroFromDb(row: Record<string, any>): HeroConfig {
+  return {
+    name: row.name ?? INITIAL_HERO.name,
+    label: row.label ?? INITIAL_HERO.label,
+    subtitle: row.subtitle ?? INITIAL_HERO.subtitle,
+    description: row.description ?? INITIAL_HERO.description,
+    statusBadge: row.status_badge ?? INITIAL_HERO.statusBadge,
+    ctaPrimaryText: row.cta_primary_text ?? INITIAL_HERO.ctaPrimaryText,
+    ctaPrimaryLink: row.cta_primary_link ?? INITIAL_HERO.ctaPrimaryLink,
+    ctaSecondaryText: row.cta_secondary_text ?? INITIAL_HERO.ctaSecondaryText,
+    ctaSecondaryLink: row.cta_secondary_link ?? INITIAL_HERO.ctaSecondaryLink,
+    videoUrl: row.video_url ?? INITIAL_HERO.videoUrl,
+    mobileVideoUrl: row.mobile_video_url ?? INITIAL_HERO.mobileVideoUrl,
+    posterUrl: row.poster_url ?? INITIAL_HERO.posterUrl,
+    mobileFallbackUrl: row.mobile_fallback_url ?? INITIAL_HERO.mobileFallbackUrl,
+    staticDesktopBg: row.static_desktop_bg ?? INITIAL_HERO.staticDesktopBg,
+    staticMobileBg: row.static_mobile_bg ?? INITIAL_HERO.staticMobileBg,
+    portraitUrl: row.portrait_url ?? INITIAL_HERO.portraitUrl,
+    resumeUrl: row.resume_url ?? INITIAL_HERO.resumeUrl,
+    videoSpeed: row.video_speed ?? INITIAL_HERO.videoSpeed,
+    overlayOpacity: row.overlay_opacity ?? INITIAL_HERO.overlayOpacity,
+    blurAmount: row.blur_amount ?? INITIAL_HERO.blurAmount,
+    videoEnabled: row.video_enabled ?? INITIAL_HERO.videoEnabled,
+    backgroundVideos: row.background_videos ?? INITIAL_HERO.backgroundVideos,
+    mobileBackgroundVideos: row.mobile_background_videos ?? INITIAL_HERO.mobileBackgroundVideos,
+    selectedVideoId: row.selected_video_id ?? INITIAL_HERO.selectedVideoId,
+    selectedMobileVideoId: row.selected_mobile_video_id ?? INITIAL_HERO.selectedMobileVideoId,
+    locationLabel: row.location_label ?? INITIAL_HERO.locationLabel,
+  };
+}
+
+function heroToDb(hero: HeroConfig): Record<string, any> {
+  return {
+    id: "default_hero",
+    name: hero.name,
+    label: hero.label,
+    subtitle: hero.subtitle,
+    description: hero.description,
+    status_badge: hero.statusBadge,
+    cta_primary_text: hero.ctaPrimaryText,
+    cta_primary_link: hero.ctaPrimaryLink,
+    cta_secondary_text: hero.ctaSecondaryText,
+    cta_secondary_link: hero.ctaSecondaryLink,
+    video_url: hero.videoUrl,
+    mobile_video_url: hero.mobileVideoUrl,
+    poster_url: hero.posterUrl,
+    mobile_fallback_url: hero.mobileFallbackUrl,
+    static_desktop_bg: hero.staticDesktopBg,
+    static_mobile_bg: hero.staticMobileBg,
+    portrait_url: hero.portraitUrl,
+    resume_url: hero.resumeUrl,
+    video_speed: hero.videoSpeed,
+    overlay_opacity: hero.overlayOpacity,
+    blur_amount: hero.blurAmount,
+    video_enabled: hero.videoEnabled,
+    background_videos: hero.backgroundVideos ?? [],
+    mobile_background_videos: hero.mobileBackgroundVideos ?? [],
+    selected_video_id: hero.selectedVideoId,
+    selected_mobile_video_id: hero.selectedMobileVideoId,
+    updated_at: new Date().toISOString(),
+  };
+}
+
+function projectFromDb(row: Record<string, any>): Project {
+  return {
+    id: row.id,
+    slug: row.slug,
+    title: row.title,
+    subtitle: row.tagline ?? "",
+    category: row.category ?? "web",
+    categoryLabel: row.category ?? "",
+    shortDescription: row.description ?? "",
+    fullDescription: row.description ?? "",
+    heroImage: row.thumbnail_url ?? "",
+    gallery: Array.isArray(row.gallery) ? row.gallery : [],
+    technologies: Array.isArray(row.tags) ? row.tags : [],
+    liveUrl: row.live_url,
+    githubUrl: row.github_url,
+    featured: row.featured ?? false,
+    displayOrder: row.display_order ?? 0,
+    year: row.created_at ? new Date(row.created_at).getFullYear().toString() : "2024",
+    role: row.category ?? "",
+    status: "Live",
+    keyFeatures: [],
+  };
+}
+
+function projectToDb(proj: Partial<Project> & { id: string }): Record<string, any> {
+  const out: Record<string, any> = { id: proj.id };
+  if (proj.title !== undefined) out.title = proj.title;
+  if (proj.slug !== undefined) out.slug = proj.slug;
+  if (proj.subtitle !== undefined) out.tagline = proj.subtitle;
+  if (proj.shortDescription !== undefined) out.description = proj.shortDescription;
+  if (proj.category !== undefined) out.category = proj.category;
+  if (proj.heroImage !== undefined) out.thumbnail_url = proj.heroImage;
+  if (proj.featured !== undefined) out.featured = proj.featured;
+  if (proj.displayOrder !== undefined) out.display_order = proj.displayOrder;
+  if (proj.liveUrl !== undefined) out.live_url = proj.liveUrl;
+  if (proj.githubUrl !== undefined) out.github_url = proj.githubUrl;
+  if (proj.technologies !== undefined) out.tags = proj.technologies;
+  if (proj.gallery !== undefined) out.gallery = proj.gallery;
+  return out;
+}
+
+function settingsFromDb(row: Record<string, any>): SiteSettings {
+  return {
+    title: row.title ?? INITIAL_SETTINGS.title,
+    description: row.description ?? INITIAL_SETTINGS.description,
+    author: row.author ?? INITIAL_SETTINGS.author,
+    email: row.email ?? INITIAL_SETTINGS.email,
+    adminEmail: row.admin_email ?? INITIAL_SETTINGS.adminEmail,
+    whatsapp: row.whatsapp ?? INITIAL_SETTINGS.whatsapp,
+    location: row.location ?? INITIAL_SETTINGS.location,
+    coordinates: row.coordinates ?? INITIAL_SETTINGS.coordinates,
+    availability: row.availability ?? INITIAL_SETTINGS.availability,
+    systemVersion: row.system_version ?? INITIAL_SETTINGS.systemVersion,
+    buildYear: row.build_year ?? INITIAL_SETTINGS.buildYear,
+    resumeUrl: row.resume_url ?? INITIAL_SETTINGS.resumeUrl,
+  };
+}
+
+function settingsToDb(s: SiteSettings): Record<string, any> {
+  return {
+    id: "default_settings",
+    author: s.author,
+    email: s.email,
+    admin_email: s.adminEmail,
+    whatsapp: s.whatsapp,
+    coordinates: s.coordinates,
+    availability: s.availability,
+    system_version: s.systemVersion,
+    build_year: s.buildYear,
+    resume_url: s.resumeUrl,
+    updated_at: new Date().toISOString(),
+  };
+}
+
+// ─── Broadcast helpers ───────────────────────────────────────────────────────
+
 function broadcastDataChange(key: string, data: any) {
   if (typeof window !== "undefined") {
-    // 1. Same-window custom event
     try {
       window.dispatchEvent(new CustomEvent("swapnil_local_sync", { detail: { key, data } }));
     } catch {}
-
-    // 2. Cross-tab BroadcastChannel
     try {
       const channel = new BroadcastChannel("swapnil_portfolio_channel_v4");
       channel.postMessage({ key, data });
@@ -76,6 +213,8 @@ function broadcastDataChange(key: string, data: any) {
     } catch {}
   }
 }
+
+// ─── Provider ───────────────────────────────────────────────────────────────
 
 export function DataProvider({ children }: { children: React.ReactNode }) {
   const [hero, setHero] = useState<HeroConfig>(INITIAL_HERO);
@@ -86,101 +225,89 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
   const [skills, setSkills] = useState<SkillCategory[]>(INITIAL_SKILL_CATEGORIES);
   const [socialLinks, setSocialLinks] = useState<SocialLink[]>(INITIAL_SOCIAL_LINKS);
   const [settings, setSettings] = useState<SiteSettings>(INITIAL_SETTINGS);
-  const [isLiveDb, setIsLiveDb] = useState<boolean>(isSupabaseConfigured);
+  const [isLiveDb, setIsLiveDb] = useState<boolean>(false);
   const [lastSaved, setLastSaved] = useState<number>(Date.now());
 
-  // Load initial data from Supabase or localStorage
+  // Load initial data from Supabase (each table independently), then localStorage fallback
   useEffect(() => {
     async function loadData() {
+      let dbLoaded = false;
+
       if (isSupabaseConfigured && supabase) {
+        // Each table fetch is isolated — one failure won't crash the others
         try {
-          const { data: heroData } = await supabase.from("hero_config").select("*").single();
-          if (heroData) {
-            setHero({
-              ...INITIAL_HERO,
-              ...heroData,
-              staticDesktopBg: heroData.staticDesktopBg || INITIAL_HERO.staticDesktopBg,
-              staticMobileBg: heroData.staticMobileBg || INITIAL_HERO.staticMobileBg,
-              mobileVideoUrl: heroData.mobileVideoUrl || INITIAL_HERO.mobileVideoUrl,
-              mobileBackgroundVideos: heroData.mobileBackgroundVideos || INITIAL_HERO.mobileBackgroundVideos,
-              selectedMobileVideoId: heroData.selectedMobileVideoId || INITIAL_HERO.selectedMobileVideoId,
-            });
-          }
+          const { data } = await supabase.from("hero_config").select("*").eq("id", "default_hero").single();
+          if (data) { setHero(heroFromDb(data)); dbLoaded = true; }
+        } catch (e) { console.warn("hero_config fetch failed:", e); }
 
-          const { data: projData } = await supabase.from("projects").select("*").order("displayOrder", { ascending: true });
-          if (projData && projData.length > 0) setProjects(projData);
+        try {
+          const { data } = await supabase.from("projects").select("*").order("display_order", { ascending: true });
+          if (data && data.length > 0) { setProjects(data.map(projectFromDb)); dbLoaded = true; }
+        } catch (e) { console.warn("projects fetch failed:", e); }
 
-          const { data: expData } = await supabase.from("experiences").select("*");
-          if (expData && expData.length > 0) setExperiences(expData);
+        try {
+          const { data } = await supabase.from("experiences").select("*").order("display_order", { ascending: true });
+          if (data && data.length > 0) setExperiences(data);
+        } catch (e) { console.warn("experiences fetch failed:", e); }
 
-          const { data: eduData } = await supabase.from("education").select("*").single();
-          if (eduData) setEducation(eduData);
+        try {
+          const { data } = await supabase.from("education").select("*").eq("id", "default_education").single();
+          if (data) setEducation(data);
+        } catch (e) { console.warn("education fetch failed:", e); }
 
-          const { data: srvData } = await supabase.from("services").select("*");
-          if (srvData && srvData.length > 0) setServices(srvData);
+        try {
+          const { data } = await supabase.from("services").select("*");
+          if (data && data.length > 0) setServices(data);
+        } catch (e) { console.warn("services fetch failed:", e); }
 
-          const { data: sklData } = await supabase.from("skills").select("*");
-          if (sklData && sklData.length > 0) setSkills(sklData);
+        try {
+          const { data } = await supabase.from("skills").select("*").order("display_order", { ascending: true });
+          if (data && data.length > 0) setSkills(data);
+        } catch (e) { console.warn("skills fetch failed:", e); }
 
-          const { data: socData } = await supabase.from("social_links").select("*");
-          if (socData && socData.length > 0) setSocialLinks(socData);
+        try {
+          const { data } = await supabase.from("social_links").select("*");
+          if (data && data.length > 0) setSocialLinks(data);
+        } catch (e) { console.warn("social_links fetch failed:", e); }
 
-          const { data: settsData } = await supabase.from("site_settings").select("*").single();
-          if (settsData) setSettings(settsData);
+        try {
+          const { data } = await supabase.from("site_settings").select("*").eq("id", "default_settings").single();
+          if (data) setSettings(settingsFromDb(data));
+        } catch (e) { console.warn("site_settings fetch failed:", e); }
 
-          setIsLiveDb(true);
-          return;
-        } catch (err) {
-          console.warn("Supabase fetch failed, falling back to local store:", err);
-          setIsLiveDb(false);
-        }
+        if (dbLoaded) { setIsLiveDb(true); return; }
       }
 
-      // Local storage fallback
+      // localStorage fallback
       try {
         const storedHero = localStorage.getItem(STORAGE_KEYS.HERO);
         if (storedHero) {
           const parsed = JSON.parse(storedHero);
-          setHero({
-            ...INITIAL_HERO,
-            ...parsed,
-            staticDesktopBg: parsed.staticDesktopBg || INITIAL_HERO.staticDesktopBg,
-            staticMobileBg: parsed.staticMobileBg || INITIAL_HERO.staticMobileBg,
-            mobileVideoUrl: parsed.mobileVideoUrl || INITIAL_HERO.mobileVideoUrl,
-            mobileBackgroundVideos: parsed.mobileBackgroundVideos || INITIAL_HERO.mobileBackgroundVideos,
-            selectedMobileVideoId: parsed.selectedMobileVideoId || INITIAL_HERO.selectedMobileVideoId,
-          });
+          setHero({ ...INITIAL_HERO, ...parsed });
         }
-
         const storedProjects = localStorage.getItem(STORAGE_KEYS.PROJECTS);
         if (storedProjects) setProjects(JSON.parse(storedProjects));
-
         const storedExp = localStorage.getItem(STORAGE_KEYS.EXPERIENCES);
         if (storedExp) setExperiences(JSON.parse(storedExp));
-
         const storedEdu = localStorage.getItem(STORAGE_KEYS.EDUCATION);
         if (storedEdu) setEducation(JSON.parse(storedEdu));
-
         const storedSrv = localStorage.getItem(STORAGE_KEYS.SERVICES);
         if (storedSrv) setServices(JSON.parse(storedSrv));
-
         const storedSkills = localStorage.getItem(STORAGE_KEYS.SKILLS);
         if (storedSkills) setSkills(JSON.parse(storedSkills));
-
         const storedSocials = localStorage.getItem(STORAGE_KEYS.SOCIALS);
         if (storedSocials) setSocialLinks(JSON.parse(storedSocials));
-
         const storedSettings = localStorage.getItem(STORAGE_KEYS.SETTINGS);
         if (storedSettings) setSettings(JSON.parse(storedSettings));
       } catch (e) {
-        console.error("Local storage load error:", e);
+        console.error("LocalStorage load error:", e);
       }
     }
 
     loadData();
   }, []);
 
-  // Real-time inter-tab & cross-window synchronization listener
+  // Cross-tab sync
   useEffect(() => {
     if (typeof window === "undefined") return;
 
@@ -188,60 +315,35 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
       if (!data) return;
       setLastSaved(Date.now());
       switch (key) {
-        case STORAGE_KEYS.HERO:
-          setHero(data);
-          break;
-        case STORAGE_KEYS.PROJECTS:
-          setProjects(data);
-          break;
-        case STORAGE_KEYS.EXPERIENCES:
-          setExperiences(data);
-          break;
-        case STORAGE_KEYS.EDUCATION:
-          setEducation(data);
-          break;
-        case STORAGE_KEYS.SERVICES:
-          setServices(data);
-          break;
-        case STORAGE_KEYS.SKILLS:
-          setSkills(data);
-          break;
-        case STORAGE_KEYS.SOCIALS:
-          setSocialLinks(data);
-          break;
-        case STORAGE_KEYS.SETTINGS:
-          setSettings(data);
-          break;
+        case STORAGE_KEYS.HERO: setHero(data); break;
+        case STORAGE_KEYS.PROJECTS: setProjects(data); break;
+        case STORAGE_KEYS.EXPERIENCES: setExperiences(data); break;
+        case STORAGE_KEYS.EDUCATION: setEducation(data); break;
+        case STORAGE_KEYS.SERVICES: setServices(data); break;
+        case STORAGE_KEYS.SKILLS: setSkills(data); break;
+        case STORAGE_KEYS.SOCIALS: setSocialLinks(data); break;
+        case STORAGE_KEYS.SETTINGS: setSettings(data); break;
       }
     };
 
-    // 1. Storage event listener (across browser tabs)
     const onStorage = (e: StorageEvent) => {
       if (e.key && e.newValue) {
-        try {
-          handleSync(e.key, JSON.parse(e.newValue));
-        } catch {}
+        try { handleSync(e.key, JSON.parse(e.newValue)); } catch {}
       }
     };
     window.addEventListener("storage", onStorage);
 
-    // 2. Custom local event listener (same-window instant update)
     const onLocal = (e: Event) => {
       const custom = e as CustomEvent<{ key: string; data: any }>;
-      if (custom.detail) {
-        handleSync(custom.detail.key, custom.detail.data);
-      }
+      if (custom.detail) handleSync(custom.detail.key, custom.detail.data);
     };
     window.addEventListener("swapnil_local_sync", onLocal);
 
-    // 3. BroadcastChannel listener (inter-tab zero-latency messaging)
     let channel: BroadcastChannel | null = null;
     try {
       channel = new BroadcastChannel("swapnil_portfolio_channel_v4");
       channel.onmessage = (e) => {
-        if (e.data && e.data.key) {
-          handleSync(e.data.key, e.data.data);
-        }
+        if (e.data?.key) handleSync(e.data.key, e.data.data);
       };
     } catch {}
 
@@ -252,39 +354,34 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
     };
   }, []);
 
+  // ─── Mutations ──────────────────────────────────────────────────────────────
+
   const updateHero = async (data: Partial<HeroConfig>) => {
     const updated = { ...hero, ...data };
     setHero(updated);
     setLastSaved(Date.now());
-    localStorage.setItem(STORAGE_KEYS.HERO, JSON.stringify(updated));
+    try { localStorage.setItem(STORAGE_KEYS.HERO, JSON.stringify(updated)); } catch {}
     broadcastDataChange(STORAGE_KEYS.HERO, updated);
 
     if (isSupabaseConfigured && supabase) {
       try {
-        await supabase.from("hero_config").upsert(updated);
-      } catch (err) {
-        console.error("Supabase hero update error:", err);
-      }
+        await supabase.from("hero_config").upsert(heroToDb(updated));
+      } catch (err) { console.error("Supabase hero update error:", err); }
     }
   };
 
   const addProject = async (projectData: Omit<Project, "id">) => {
-    const newProject: Project = {
-      ...projectData,
-      id: "proj-" + Date.now(),
-    };
+    const newProject: Project = { ...projectData, id: "proj-" + Date.now() };
     const updated = [newProject, ...projects];
     setProjects(updated);
     setLastSaved(Date.now());
-    localStorage.setItem(STORAGE_KEYS.PROJECTS, JSON.stringify(updated));
+    try { localStorage.setItem(STORAGE_KEYS.PROJECTS, JSON.stringify(updated)); } catch {}
     broadcastDataChange(STORAGE_KEYS.PROJECTS, updated);
 
     if (isSupabaseConfigured && supabase) {
       try {
-        await supabase.from("projects").insert(newProject);
-      } catch (err) {
-        console.error("Supabase add project error:", err);
-      }
+        await supabase.from("projects").insert(projectToDb(newProject));
+      } catch (err) { console.error("Supabase add project error:", err); }
     }
   };
 
@@ -292,15 +389,13 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
     const updated = projects.map((p) => (p.id === id ? { ...p, ...projectData } : p));
     setProjects(updated);
     setLastSaved(Date.now());
-    localStorage.setItem(STORAGE_KEYS.PROJECTS, JSON.stringify(updated));
+    try { localStorage.setItem(STORAGE_KEYS.PROJECTS, JSON.stringify(updated)); } catch {}
     broadcastDataChange(STORAGE_KEYS.PROJECTS, updated);
 
     if (isSupabaseConfigured && supabase) {
       try {
-        await supabase.from("projects").update(projectData).eq("id", id);
-      } catch (err) {
-        console.error("Supabase update project error:", err);
-      }
+        await supabase.from("projects").update(projectToDb({ ...projectData, id })).eq("id", id);
+      } catch (err) { console.error("Supabase update project error:", err); }
     }
   };
 
@@ -308,90 +403,68 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
     const updated = projects.filter((p) => p.id !== id);
     setProjects(updated);
     setLastSaved(Date.now());
-    localStorage.setItem(STORAGE_KEYS.PROJECTS, JSON.stringify(updated));
+    try { localStorage.setItem(STORAGE_KEYS.PROJECTS, JSON.stringify(updated)); } catch {}
     broadcastDataChange(STORAGE_KEYS.PROJECTS, updated);
 
     if (isSupabaseConfigured && supabase) {
       try {
         await supabase.from("projects").delete().eq("id", id);
-      } catch (err) {
-        console.error("Supabase delete project error:", err);
-      }
+      } catch (err) { console.error("Supabase delete project error:", err); }
     }
   };
 
   const updateExperiences = async (updated: Experience[]) => {
     setExperiences(updated);
     setLastSaved(Date.now());
-    localStorage.setItem(STORAGE_KEYS.EXPERIENCES, JSON.stringify(updated));
+    try { localStorage.setItem(STORAGE_KEYS.EXPERIENCES, JSON.stringify(updated)); } catch {}
     broadcastDataChange(STORAGE_KEYS.EXPERIENCES, updated);
 
     if (isSupabaseConfigured && supabase) {
-      try {
-        await supabase.from("experiences").upsert(updated);
-      } catch (err) {
-        console.error("Supabase experiences update error:", err);
-      }
+      try { await supabase.from("experiences").upsert(updated); } catch (err) { console.error(err); }
     }
   };
 
   const updateEducation = async (updated: Education) => {
     setEducation(updated);
     setLastSaved(Date.now());
-    localStorage.setItem(STORAGE_KEYS.EDUCATION, JSON.stringify(updated));
+    try { localStorage.setItem(STORAGE_KEYS.EDUCATION, JSON.stringify(updated)); } catch {}
     broadcastDataChange(STORAGE_KEYS.EDUCATION, updated);
 
     if (isSupabaseConfigured && supabase) {
-      try {
-        await supabase.from("education").upsert({ ...updated, id: "default_education" });
-      } catch (err) {
-        console.error("Supabase education update error:", err);
-      }
+      try { await supabase.from("education").upsert({ ...updated, id: "default_education" }); } catch (err) { console.error(err); }
     }
   };
 
   const updateServices = async (updated: Service[]) => {
     setServices(updated);
     setLastSaved(Date.now());
-    localStorage.setItem(STORAGE_KEYS.SERVICES, JSON.stringify(updated));
+    try { localStorage.setItem(STORAGE_KEYS.SERVICES, JSON.stringify(updated)); } catch {}
     broadcastDataChange(STORAGE_KEYS.SERVICES, updated);
 
     if (isSupabaseConfigured && supabase) {
-      try {
-        await supabase.from("services").upsert(updated);
-      } catch (err) {
-        console.error("Supabase services update error:", err);
-      }
+      try { await supabase.from("services").upsert(updated); } catch (err) { console.error(err); }
     }
   };
 
   const updateSkills = async (updated: SkillCategory[]) => {
     setSkills(updated);
     setLastSaved(Date.now());
-    localStorage.setItem(STORAGE_KEYS.SKILLS, JSON.stringify(updated));
+    try { localStorage.setItem(STORAGE_KEYS.SKILLS, JSON.stringify(updated)); } catch {}
     broadcastDataChange(STORAGE_KEYS.SKILLS, updated);
 
     if (isSupabaseConfigured && supabase) {
-      try {
-        await supabase.from("skills").upsert(updated);
-      } catch (err) {
-        console.error("Supabase skills update error:", err);
-      }
+      try { await supabase.from("skills").upsert(updated); } catch (err) { console.error(err); }
     }
   };
 
   const updateSocialLinks = async (updated: SocialLink[]) => {
     setSocialLinks(updated);
     setLastSaved(Date.now());
-    localStorage.setItem(STORAGE_KEYS.SOCIALS, JSON.stringify(updated));
+    try { localStorage.setItem(STORAGE_KEYS.SOCIALS, JSON.stringify(updated)); } catch {}
     broadcastDataChange(STORAGE_KEYS.SOCIALS, updated);
 
     if (isSupabaseConfigured && supabase) {
-      try {
-        await supabase.from("social_links").upsert(updated);
-      } catch (err) {
-        console.error("Supabase social links update error:", err);
-      }
+      try { await supabase.from("social_links").upsert(updated); } catch (err) { console.error(err); }
     }
   };
 
@@ -399,15 +472,11 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
     const updated = { ...settings, ...data };
     setSettings(updated);
     setLastSaved(Date.now());
-    localStorage.setItem(STORAGE_KEYS.SETTINGS, JSON.stringify(updated));
+    try { localStorage.setItem(STORAGE_KEYS.SETTINGS, JSON.stringify(updated)); } catch {}
     broadcastDataChange(STORAGE_KEYS.SETTINGS, updated);
 
     if (isSupabaseConfigured && supabase) {
-      try {
-        await supabase.from("site_settings").upsert({ ...updated, id: "default_settings" });
-      } catch (err) {
-        console.error("Supabase settings update error:", err);
-      }
+      try { await supabase.from("site_settings").upsert(settingsToDb(updated)); } catch (err) { console.error(err); }
     }
   };
 
@@ -421,32 +490,20 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
     setSocialLinks(INITIAL_SOCIAL_LINKS);
     setSettings(INITIAL_SETTINGS);
     setLastSaved(Date.now());
-
-    Object.values(STORAGE_KEYS).forEach((k) => localStorage.removeItem(k));
-    Object.keys(STORAGE_KEYS).forEach((k) => broadcastDataChange(STORAGE_KEYS[k as keyof typeof STORAGE_KEYS], null));
+    Object.values(STORAGE_KEYS).forEach((k) => { try { localStorage.removeItem(k); } catch {} });
   };
 
   return (
     <DataContext.Provider
       value={{
-        hero,
-        updateHero,
-        projects,
-        addProject,
-        updateProject,
-        deleteProject,
-        experiences,
-        updateExperiences,
-        education,
-        updateEducation,
-        services,
-        updateServices,
-        skills,
-        updateSkills,
-        socialLinks,
-        updateSocialLinks,
-        settings,
-        updateSettings,
+        hero, updateHero,
+        projects, addProject, updateProject, deleteProject,
+        experiences, updateExperiences,
+        education, updateEducation,
+        services, updateServices,
+        skills, updateSkills,
+        socialLinks, updateSocialLinks,
+        settings, updateSettings,
         resetToDefaults,
         isLiveDb,
         lastSaved,
