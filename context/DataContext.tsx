@@ -92,10 +92,10 @@ function heroFromDb(row: Record<string, any>): HeroConfig {
     staticMobileBg: row.static_mobile_bg ?? INITIAL_HERO.staticMobileBg,
     portraitUrl: row.portrait_url ?? INITIAL_HERO.portraitUrl,
     resumeUrl: row.resume_url ?? INITIAL_HERO.resumeUrl,
-    videoSpeed: row.video_speed ?? INITIAL_HERO.videoSpeed,
-    overlayOpacity: row.overlay_opacity ?? INITIAL_HERO.overlayOpacity,
-    blurAmount: row.blur_amount ?? INITIAL_HERO.blurAmount,
-    videoEnabled: row.video_enabled ?? INITIAL_HERO.videoEnabled,
+    videoSpeed: row.video_speed !== undefined && row.video_speed !== null ? Number(row.video_speed) : INITIAL_HERO.videoSpeed,
+    overlayOpacity: row.overlay_opacity !== undefined && row.overlay_opacity !== null ? Number(row.overlay_opacity) : INITIAL_HERO.overlayOpacity,
+    blurAmount: row.blur_amount !== undefined && row.blur_amount !== null ? Number(row.blur_amount) : (INITIAL_HERO.blurAmount ?? 0),
+    videoEnabled: row.video_enabled !== undefined && row.video_enabled !== null ? Boolean(row.video_enabled) : INITIAL_HERO.videoEnabled,
     backgroundVideos: parseJsonArray(row.background_videos, INITIAL_HERO.backgroundVideos ?? []),
     mobileBackgroundVideos: parseJsonArray(row.mobile_background_videos, INITIAL_HERO.mobileBackgroundVideos ?? []),
     selectedVideoId: row.selected_video_id ?? INITIAL_HERO.selectedVideoId,
@@ -122,10 +122,10 @@ function heroToDb(hero: HeroConfig): Record<string, any> {
     static_mobile_bg: hero.staticMobileBg,
     portrait_url: hero.portraitUrl,
     resume_url: hero.resumeUrl,
-    video_speed: hero.videoSpeed,
-    overlay_opacity: hero.overlayOpacity,
-    blur_amount: hero.blurAmount,
-    video_enabled: hero.videoEnabled,
+    video_speed: typeof hero.videoSpeed === "number" ? hero.videoSpeed : (parseFloat(hero.videoSpeed as any) || 1.0),
+    overlay_opacity: typeof hero.overlayOpacity === "number" ? hero.overlayOpacity : (parseFloat(hero.overlayOpacity as any) || 0.65),
+    blur_amount: typeof hero.blurAmount === "number" ? hero.blurAmount : (parseFloat(hero.blurAmount as any) || 0),
+    video_enabled: Boolean(hero.videoEnabled),
     background_videos: hero.backgroundVideos ?? [],
     mobile_background_videos: hero.mobileBackgroundVideos ?? [],
     selected_video_id: hero.selectedVideoId,
@@ -406,11 +406,17 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
 
     if (isSupabaseConfigured && supabase) {
       try {
-        const { error } = await supabase.from("hero_config").upsert(heroToDb(updated));
+        const { error } = await supabase
+          .from("hero_config")
+          .upsert(heroToDb(updated), { onConflict: "id" });
         if (error) {
           console.error("Supabase hero update error:", error.message, error.details);
+          throw new Error(error.message || "Failed to update hero config");
         }
-      } catch (err) { console.error("Supabase hero update error:", err); }
+      } catch (err) {
+        console.error("Supabase hero update error:", err);
+        throw err;
+      }
     }
   };
 

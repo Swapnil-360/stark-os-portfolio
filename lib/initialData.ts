@@ -9,7 +9,7 @@ export const INITIAL_HERO: HeroConfig = {
   ctaPrimaryLink: "#projects",
   ctaSecondaryText: "CONTACT ME",
   ctaSecondaryLink: "#contact",
-  portraitUrl: "/images/bg_static_desktop.jpg",
+  portraitUrl: "/images/pfp.png",
   videoUrl: "/videos/bg_video.mp4",
   posterUrl: "/images/bg_static_desktop.jpg",
   mobileFallbackUrl: "/images/bg_static_mobile.jpg",

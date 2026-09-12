@@ -330,7 +330,7 @@ export default function CleanGlassPortfolio() {
             videoActive ? "opacity-0" : "opacity-100"
           }`}
           style={{
-            backgroundImage: `url('${hero.staticMobileBg || "/images/bg_static_mobile.jpg"}')`,
+            backgroundImage: `url('${hero.staticMobileBg || hero.mobileFallbackUrl || "/images/bg_static_mobile.jpg"}')`,
             filter: (hero.blurAmount || 0) > 0 ? `blur(${hero.blurAmount}px)` : undefined,
             transform: (hero.blurAmount || 0) > 0 ? "scale(1.04)" : undefined,
           }}
@@ -376,9 +376,16 @@ export default function CleanGlassPortfolio() {
           }}
         />
 
-        {/* Soft Vignette Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/70 pointer-events-none" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_40%,rgba(0,0,0,0.6)_100%)] pointer-events-none" />
+        {/* Dynamic Darkness Overlay (Controlled from CMS Overlay Darkness slider) */}
+        <div
+          className="absolute inset-0 pointer-events-none transition-opacity duration-300"
+          style={{
+            backgroundColor: "black",
+            opacity: typeof hero.overlayOpacity === "number" ? hero.overlayOpacity : 0.65,
+          }}
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/60 pointer-events-none" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_40%,rgba(0,0,0,0.5)_100%)] pointer-events-none" />
       </div>
 
       {/* ========================================================
@@ -761,8 +768,8 @@ export default function CleanGlassPortfolio() {
               <div className="relative w-48 h-48 sm:w-64 sm:h-64 md:w-80 md:h-80 lg:w-[22rem] lg:h-[22rem] xl:w-[25rem] xl:h-[25rem] aspect-square rounded-full border border-white/20 hover:border-accent/60 bg-black/40 backdrop-blur-md shadow-2xl shadow-black/80 p-2 sm:p-3 group transition-all duration-500 hover:shadow-[0_0_35px_rgba(255,30,56,0.35)] shrink-0">
                 <div className="relative w-full h-full rounded-full overflow-hidden bg-black/60 border border-white/10">
                   <Image
-                    src="/images/pfp.png"
-                    alt="Md. Miftahur Rahman Swapnil"
+                    src={hero.portraitUrl || "/images/pfp.png"}
+                    alt={hero.name || "Md. Miftahur Rahman Swapnil"}
                     fill
                     sizes="(max-width: 768px) 200px, 400px"
                     className="object-cover object-center group-hover:scale-105 transition-transform duration-700"
