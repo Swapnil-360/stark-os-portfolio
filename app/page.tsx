@@ -653,66 +653,44 @@ export default function CleanGlassPortfolio() {
         </div>
       </header>
 
-      {/* Mobile Floating Bottom Glass Dock (Quick one-thumb navigation) */}
-      <div className="fixed bottom-3 inset-x-0 z-50 flex justify-center sm:hidden px-3 pointer-events-none">
-        <nav className="pointer-events-auto rounded-full border border-white/20 bg-[#080d16]/95 backdrop-blur-2xl px-2.5 py-1.5 flex items-center gap-1 shadow-[0_8px_32px_rgba(0,0,0,0.95)] max-w-full overflow-x-auto no-scrollbar">
-          {[
-            { id: "home", label: "Home" },
-            { id: "about", label: "About" },
-            { id: "skills", label: "Skills" },
-            { id: "projects", label: "Projects" },
-            { id: "contact", label: "Contact" },
-          ].map((tab) => {
-            const isActive = activeTab === tab.id;
-            return (
+      {/* Mobile Menu Dropdown with Backdrop Overlay */}
+      {mobileMenuOpen && (
+        <>
+          <div
+            className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 sm:hidden animate-in fade-in duration-200"
+            onClick={() => setMobileMenuOpen(false)}
+          />
+          <div className="fixed inset-x-4 top-16 z-50 rounded-2xl bg-[#0a0f18]/95 backdrop-blur-2xl border border-white/15 p-4 space-y-2 font-mono text-xs shadow-2xl sm:hidden animate-in fade-in zoom-in-95 duration-200">
+            {[
+              { id: "home", label: "Home" },
+              { id: "about", label: "About" },
+              { id: "skills", label: "Skills" },
+              { id: "projects", label: "Projects" },
+              { id: "contact", label: "Contact" },
+            ].map((tab) => (
               <button
                 key={tab.id}
-                onClick={() => setActiveTab(tab.id as ActiveTab)}
-                className={`px-3 py-1.5 rounded-full text-xs font-medium tracking-wide transition-all whitespace-nowrap cursor-pointer ${
-                  isActive
-                    ? "bg-accent text-white shadow-[0_0_12px_rgba(255,30,56,0.5)] font-bold"
-                    : "text-gray-300 hover:text-white"
+                onClick={() => {
+                  setActiveTab(tab.id as ActiveTab);
+                  setMobileMenuOpen(false);
+                }}
+                className={`w-full text-left px-4 py-2.5 rounded-xl transition-all cursor-pointer ${
+                  activeTab === tab.id
+                    ? "bg-accent text-white font-bold shadow-[0_0_12px_rgba(255,30,56,0.5)]"
+                    : "text-gray-300 hover:text-white hover:bg-white/5"
                 }`}
               >
                 {tab.label}
               </button>
-            );
-          })}
-        </nav>
-      </div>
-
-      {/* Mobile Menu Dropdown (Clean backup) */}
-      {mobileMenuOpen && (
-        <div className="fixed inset-x-4 top-16 z-50 rounded-2xl bg-[#0a0f18]/95 backdrop-blur-2xl border border-white/15 p-4 space-y-2 font-mono text-xs shadow-2xl sm:hidden animate-in fade-in zoom-in-95 duration-200">
-          {[
-            { id: "home", label: "Home" },
-            { id: "about", label: "About" },
-            { id: "skills", label: "Skills" },
-            { id: "projects", label: "Projects" },
-            { id: "contact", label: "Contact" },
-          ].map((tab) => (
-            <button
-              key={tab.id}
-              onClick={() => {
-                setActiveTab(tab.id as ActiveTab);
-                setMobileMenuOpen(false);
-              }}
-              className={`w-full text-left px-4 py-2.5 rounded-xl transition-all cursor-pointer ${
-                activeTab === tab.id
-                  ? "bg-accent text-white font-bold"
-                  : "text-gray-300 hover:text-white hover:bg-white/5"
-              }`}
-            >
-              {tab.label}
-            </button>
-          ))}
-        </div>
+            ))}
+          </div>
+        </>
       )}
 
       {/* ========================================================
           MAIN VIEWPORT (CLEAN GLASS, RESPONSIVE CONTAINER)
       ======================================================== */}
-      <main className="relative z-20 flex-1 flex flex-col justify-center px-3 sm:px-8 lg:px-14 pb-20 sm:pb-0 overflow-y-auto sm:overflow-hidden">
+      <main className="relative z-20 flex-1 flex flex-col justify-center px-3 sm:px-8 lg:px-14 pb-6 sm:pb-0 overflow-y-auto sm:overflow-hidden">
         {/* ======================================================
             TAB 1: HOME (EXACT TANJIL.ME CLEAN GLASS LANDING PAGE VIEW)
         ====================================================== */}
