@@ -4,7 +4,7 @@ import { ThemeProvider } from "@/context/ThemeContext";
 import { DataProvider } from "@/context/DataContext";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://www.mrswapnil.me"),
+  metadataBase: new URL("https://mrswapnil.me"),
   title: "Md. Miftahur Rahman Swapnil | Cinematic Command Portfolio",
   description:
     "Cinematic sci-fi command interface portfolio of Md. Miftahur Rahman Swapnil. Frontend Developer, Creative Technologist, and UI/UX Designer.",
@@ -23,7 +23,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://www.mrswapnil.me/",
+    url: "https://mrswapnil.me/",
     title: "Md. Miftahur Rahman Swapnil | Cinematic Command Portfolio",
     description:
       "Futuristic sci-fi HUD command portfolio of Md. Miftahur Rahman Swapnil.",
