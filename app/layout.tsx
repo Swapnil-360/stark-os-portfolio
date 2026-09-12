@@ -58,6 +58,19 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark">
       <body className="bg-background text-foreground antialiased selection:bg-accent selection:text-white relative min-h-screen">
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              if (typeof window !== 'undefined' && 'serviceWorker' in navigator) {
+                navigator.serviceWorker.getRegistrations().then(function(registrations) {
+                  for (var r of registrations) {
+                    r.unregister();
+                  }
+                });
+              }
+            `,
+          }}
+        />
         <ThemeProvider>
           <DataProvider>
             {children}
