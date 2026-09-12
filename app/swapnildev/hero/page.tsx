@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useData } from "@/context/DataContext";
 import { HeroConfig, BackgroundVideo } from "@/types/portfolio";
+import { uploadFile } from "@/lib/upload";
 import {
   Video,
   Check,
@@ -81,28 +82,16 @@ export default function AdminHeroPage() {
     setUploadStatus("Uploading video to command storage...");
 
     try {
-      const data = new FormData();
-      data.append("file", videoFile);
-      data.append("folder", "videos");
-      if (videoName.trim()) {
-        data.append("name", videoName.trim().toLowerCase().replace(/\s+/g, "_"));
-      }
-
-      const res = await fetch("/api/upload", {
-        method: "POST",
-        body: data,
+      const uploadResult = await uploadFile(videoFile, {
+        folder: "videos",
+        name: videoName.trim() ? videoName.trim().toLowerCase().replace(/\s+/g, "_") : undefined,
       });
-
-      const json = await res.json();
-      if (!res.ok || !json.success) {
-        throw new Error(json.error || "Upload failed");
-      }
 
       // Add to backgroundVideos array
       const newVideo: BackgroundVideo = {
         id: "vid-" + Date.now(),
-        name: videoName.trim() || json.filename || "Uploaded Background Video",
-        url: json.url,
+        name: videoName.trim() || uploadResult.filename || "Uploaded Background Video",
+        url: uploadResult.url,
         poster: formData.posterUrl || "/images/background_ref.png",
       };
 
@@ -208,27 +197,15 @@ export default function AdminHeroPage() {
     setMobileUploadStatus("Uploading mobile video to command storage...");
 
     try {
-      const data = new FormData();
-      data.append("file", mobileVideoFile);
-      data.append("folder", "videos");
-      if (mobileVideoName.trim()) {
-        data.append("name", "mobile_" + mobileVideoName.trim().toLowerCase().replace(/\s+/g, "_"));
-      }
-
-      const res = await fetch("/api/upload", {
-        method: "POST",
-        body: data,
+      const uploadResult = await uploadFile(mobileVideoFile, {
+        folder: "videos",
+        name: mobileVideoName.trim() ? "mobile_" + mobileVideoName.trim().toLowerCase().replace(/\s+/g, "_") : undefined,
       });
-
-      const json = await res.json();
-      if (!res.ok || !json.success) {
-        throw new Error(json.error || "Upload failed");
-      }
 
       const newVideo: BackgroundVideo = {
         id: "vid-mob-" + Date.now(),
-        name: mobileVideoName.trim() || json.filename || "Uploaded Mobile Background Video",
-        url: json.url,
+        name: mobileVideoName.trim() || uploadResult.filename || "Uploaded Mobile Background Video",
+        url: uploadResult.url,
         poster: formData.mobileFallbackUrl || formData.staticMobileBg || "/images/bg_static_mobile.jpg",
         deviceType: "mobile",
       };

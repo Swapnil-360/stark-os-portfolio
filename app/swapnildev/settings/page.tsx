@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useData } from "@/context/DataContext";
 import { SiteSettings } from "@/types/portfolio";
+import { uploadFile } from "@/lib/upload";
 import {
   Settings,
   Check,
@@ -58,22 +59,12 @@ export default function AdminSettingsPage() {
     setCvStatus("Uploading CV to cloud & portfolio directory...");
 
     try {
-      const data = new FormData();
-      data.append("file", resumeFile);
-      data.append("folder", "resumes");
-      data.append("name", "swapnil_resume");
-
-      const res = await fetch("/api/upload", {
-        method: "POST",
-        body: data,
+      const uploadResult = await uploadFile(resumeFile, {
+        folder: "resumes",
+        name: "swapnil_resume",
       });
 
-      const json = await res.json();
-      if (!res.ok || !json.success) {
-        throw new Error(json.error || "CV upload failed");
-      }
-
-      const newResumeUrl = json.url || "/resume.pdf";
+      const newResumeUrl = uploadResult.url || "/resume.pdf";
 
       // Update both settings and hero resumeUrl
       const updatedSettings = { ...formData, resumeUrl: newResumeUrl };
