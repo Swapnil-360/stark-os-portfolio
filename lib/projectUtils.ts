@@ -177,5 +177,77 @@ export function normalizeProjectLiveUrl(
     }
   }
 
+  // If this is Prince, ensure canonical domain is https://www.sbprince.com/
+  if (text.includes("prince")) {
+    if (!raw || raw.includes("princeagrotech") || raw.includes("sbprince.com") || raw.includes("prince")) {
+      return "https://www.sbprince.com/";
+    }
+  }
+
   return raw || undefined;
 }
+
+export function sanitizeProjectData<T extends {
+  title?: string;
+  subtitle?: string;
+  shortDescription?: string;
+  fullDescription?: string;
+  liveUrl?: string;
+  githubUrl?: string;
+  category?: any;
+  categoryLabel?: string;
+  technologies?: string[];
+  heroImage?: string;
+  gallery?: string[];
+  slug?: string;
+  id?: string;
+}>(proj: T): T {
+  const text = `${proj.slug || ""} ${proj.title || ""} ${proj.id || ""}`.toLowerCase();
+
+  if (text.includes("prince")) {
+    const isStaleAgro =
+      text.includes("agro") ||
+      (proj.liveUrl && proj.liveUrl.includes("princeagrotech")) ||
+      (proj.fullDescription && proj.fullDescription.toLowerCase().includes("agritech"));
+
+    return {
+      ...proj,
+      title: isStaleAgro || proj.title === "Portfolio for Prince" || !proj.title
+        ? "Prince - Digital Marketing & Web Expert Portfolio"
+        : proj.title,
+      subtitle: isStaleAgro || !proj.subtitle
+        ? "High-Conversion Client Portfolio & Personal Branding Platform"
+        : proj.subtitle,
+      shortDescription: isStaleAgro || !proj.shortDescription
+        ? "Prince Varman - Expert in crypto project support, digital marketing, web development, and creative design. Professional bespoke client portfolio engineered with high-conversion visual design."
+        : proj.shortDescription,
+      fullDescription: isStaleAgro || !proj.fullDescription
+        ? "Prince Varman - Expert in crypto project support, digital marketing, web development, and creative design. Professional portfolio showcasing premium services, marketing funnels, and successful client projects. Engineered with precision micro-interactions, responsive typography, and blazing fast performance to drive client conversions."
+        : proj.fullDescription,
+      liveUrl: "https://www.sbprince.com/",
+      githubUrl: !proj.githubUrl || proj.githubUrl === "https://github.com/Swapnil-360"
+        ? "https://github.com/Swapnil-360/Myself_Prince.git"
+        : proj.githubUrl,
+      category: "web",
+      categoryLabel: "Client Web Experience",
+      heroImage: "/images/projects/prince.jpg",
+      technologies: isStaleAgro || !proj.technologies || proj.technologies.includes("MQTT")
+        ? ["React", "JavaScript", "Tailwind CSS", "Web Development", "Crypto Marketing"]
+        : proj.technologies,
+      gallery: isStaleAgro || !proj.gallery || proj.gallery.length === 0
+        ? ["/images/projects/prince.jpg", "/images/projects/prince_real.png"]
+        : proj.gallery,
+    };
+  }
+
+  if (text.includes("opusgen")) {
+    return {
+      ...proj,
+      liveUrl: "https://www.opusgenai.com/",
+      heroImage: "/images/projects/opusgen.jpg",
+    };
+  }
+
+  return proj;
+}
+

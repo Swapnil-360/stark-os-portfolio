@@ -22,7 +22,7 @@ import {
   INITIAL_SOCIAL_LINKS,
 } from "@/lib/initialData";
 import { supabase, isSupabaseConfigured } from "@/lib/supabase/client";
-import { getProjectThumbnail, normalizeProjectCategory, normalizeProjectLiveUrl } from "@/lib/projectUtils";
+import { getProjectThumbnail, normalizeProjectCategory, normalizeProjectLiveUrl, sanitizeProjectData } from "@/lib/projectUtils";
 
 interface DataContextType {
   hero: HeroConfig;
@@ -149,7 +149,7 @@ function projectFromDb(row: Record<string, any>): Project {
     row.title
   );
 
-  return {
+  return sanitizeProjectData({
     id: row.id,
     slug: row.slug,
     title: row.title,
@@ -169,7 +169,7 @@ function projectFromDb(row: Record<string, any>): Project {
     role: row.category ?? "",
     status: "Live",
     keyFeatures: [],
-  };
+  });
 }
 
 function projectToDb(proj: Partial<Project> & { id: string }): Record<string, any> {
@@ -306,6 +306,25 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
             if (staleOpus) {
               supabase.from("projects").update({ live_url: "https://www.opusgenai.com/" }).eq("id", staleOpus.id).then(() => {});
             }
+
+            // Self-heal Prince project details in Supabase database if stale or wrong
+            const stalePrince = data.find((p: any) =>
+              (p.slug?.includes("prince") || p.title?.toLowerCase().includes("prince")) &&
+              (p.title?.toLowerCase().includes("agro") || p.live_url?.includes("princeagrotech") || !p.live_url?.includes("sbprince.com"))
+            );
+            if (stalePrince) {
+              supabase.from("projects").update({
+                title: "Prince - Digital Marketing & Web Expert Portfolio",
+                tagline: "High-Conversion Client Portfolio & Personal Branding Platform",
+                category: "Client Web Experience",
+                description: "Prince Varman - Expert in crypto project support, digital marketing, web development, and creative design. Professional bespoke client portfolio engineered with high-conversion visual design, interactive service showcases, and modern responsive architecture.",
+                live_url: "https://www.sbprince.com/",
+                github_url: "https://github.com/Swapnil-360/Myself_Prince.git",
+                thumbnail_url: "/images/projects/prince.jpg",
+                tags: ["React", "JavaScript", "Tailwind CSS", "Web Development", "Crypto Marketing"],
+                gallery: ["/images/projects/prince.jpg", "/images/projects/prince_real.png"]
+              }).eq("id", stalePrince.id).then(() => {});
+            }
           }
         } catch (e) { console.warn("projects fetch failed:", e); }
 
@@ -354,7 +373,7 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
           try {
             const parsed = JSON.parse(storedProjects);
             if (Array.isArray(parsed)) {
-              setProjects(parsed.map(p => ({
+              setProjects(parsed.map(p => sanitizeProjectData({
                 ...p,
                 liveUrl: normalizeProjectLiveUrl(p.liveUrl, p.slug, p.title),
                 heroImage: getProjectThumbnail(p),
