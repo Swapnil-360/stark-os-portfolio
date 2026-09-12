@@ -22,7 +22,7 @@ import {
   INITIAL_SOCIAL_LINKS,
 } from "@/lib/initialData";
 import { supabase, isSupabaseConfigured } from "@/lib/supabase/client";
-import { getProjectThumbnail } from "@/lib/projectUtils";
+import { getProjectThumbnail, normalizeProjectCategory } from "@/lib/projectUtils";
 
 interface DataContextType {
   hero: HeroConfig;
@@ -143,13 +143,19 @@ function projectFromDb(row: Record<string, any>): Project {
     title: row.title,
   });
 
+  const { category, categoryLabel } = normalizeProjectCategory(
+    row.category,
+    row.slug,
+    row.title
+  );
+
   return {
     id: row.id,
     slug: row.slug,
     title: row.title,
     subtitle: row.tagline ?? "",
-    category: row.category ?? "web",
-    categoryLabel: row.category ?? "",
+    category,
+    categoryLabel,
     shortDescription: row.description ?? "",
     fullDescription: row.description ?? "",
     heroImage,

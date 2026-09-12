@@ -9,6 +9,7 @@ import HudBadge from "../ui/HudBadge";
 import HudButton from "../ui/HudButton";
 import ProjectModal from "../projects/ProjectModal";
 import { ExternalLink, Github, Eye, ArrowUpRight, FolderGit2 } from "lucide-react";
+import { matchProjectCategory } from "@/lib/projectUtils";
 
 export default function ProjectsSection() {
   const { projects } = useData();
@@ -23,10 +24,9 @@ export default function ProjectsSection() {
     { id: "game", label: "GRAPHICS & GAMES" },
   ];
 
-  const filteredProjects =
-    activeCategory === "all"
-      ? projects
-      : projects.filter((p) => p.category === activeCategory);
+  const filteredProjects = projects.filter((p) =>
+    matchProjectCategory(p, activeCategory)
+  );
 
   const handlePrev = () => {
     if (!selectedProject) return;

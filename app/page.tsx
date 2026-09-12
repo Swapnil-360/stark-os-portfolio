@@ -9,7 +9,7 @@ import { Project } from "@/types/portfolio";
 import { INITIAL_EDUCATION, INITIAL_SKILL_CATEGORIES, INITIAL_SERVICES } from "@/lib/initialData";
 import ProjectModal from "@/components/projects/ProjectModal";
 import { CardStack, CardStackItem } from "@/components/ui/card-stack";
-import { getProjectThumbnail } from "@/lib/projectUtils";
+import { getProjectThumbnail, matchProjectCategory } from "@/lib/projectUtils";
 import confetti from "canvas-confetti";
 import {
   Home,
@@ -260,11 +260,10 @@ export default function CleanGlassPortfolio() {
           },
         ];
 
-  // Filtered projects
-  const filteredProjects =
-    projectCategory === "all"
-      ? projects
-      : projects.filter((p) => p.category === projectCategory);
+  // Filtered projects using robust category matcher
+  const filteredProjects = projects.filter((p) =>
+    matchProjectCategory(p, projectCategory)
+  );
 
   const handleContactSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -1129,9 +1128,9 @@ export default function CleanGlassPortfolio() {
                     { id: "ai", label: "AI & Tools" },
                     { id: "game", label: "Graphics / C" },
                   ].map((cat) => {
-                    const count = cat.id === "all"
-                      ? projects.length
-                      : projects.filter((p) => p.category === cat.id).length;
+                    const count = projects.filter((p) =>
+                      matchProjectCategory(p, cat.id)
+                    ).length;
                     const active = projectCategory === cat.id;
                     return (
                       <button
