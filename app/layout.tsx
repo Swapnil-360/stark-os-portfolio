@@ -4,7 +4,7 @@ import { ThemeProvider } from "@/context/ThemeContext";
 import { DataProvider } from "@/context/DataContext";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://mrswapnil.me"),
+  metadataBase: new URL("https://www.mrswapnil.me"),
   title: "Md. Miftahur Rahman Swapnil | Cinematic Command Portfolio",
   description:
     "Cinematic sci-fi command interface portfolio of Md. Miftahur Rahman Swapnil. Frontend Developer, Creative Technologist, and UI/UX Designer.",
@@ -23,20 +23,20 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://mrswapnil.me/",
+    url: "https://www.mrswapnil.me/",
     title: "Md. Miftahur Rahman Swapnil | Cinematic Command Portfolio",
     description:
       "Futuristic sci-fi HUD command portfolio of Md. Miftahur Rahman Swapnil.",
     siteName: "Swapnil Command System",
     images: [
       {
-        url: "https://mrswapnil.me/og-image.png",
+        url: "https://www.mrswapnil.me/og-image.png",
         width: 1200,
         height: 630,
         alt: "Swapnil Portfolio HUD Preview",
       },
       {
-        url: "https://mrswapnil.me/og-image.jpg",
+        url: "https://www.mrswapnil.me/og-image.jpg",
         width: 1200,
         height: 630,
         alt: "Swapnil Portfolio HUD Preview",
@@ -49,7 +49,7 @@ export const metadata: Metadata = {
     description:
       "Cinematic sci-fi command interface portfolio of Md. Miftahur Rahman Swapnil.",
     creator: "@thomascryptoxx",
-    images: ["https://mrswapnil.me/og-image.png"],
+    images: ["https://www.mrswapnil.me/og-image.png"],
   },
   icons: {
     icon: [
