@@ -63,7 +63,7 @@ export const INITIAL_PROJECTS: Project[] = [
   {
     id: "proj-curricurag",
     slug: "curricurag",
-    title: "CurricuRAG",
+    title: "Relation-Aware Graph Retrieval over a Curriculum Knowledge Graph for Prerequisite QA",
     subtitle: "Relation-Aware Curriculum Knowledge Graph Retrieval & QA (IEEE OMLET 2026)",
     category: "ai",
     categoryLabel: "AI & Knowledge Graphs",
@@ -531,7 +531,7 @@ export const INITIAL_EDUCATION: Education = {
   ],
   researchInterests: [
     {
-      title: "CurricuRAG: Curriculum Knowledge-Graph Enhanced RAG",
+      title: "Relation-Aware Graph Retrieval over a Curriculum Knowledge Graph for Prerequisite QA",
       description: "Relation-aware graph retrieval with 2-layer R-GCN and local LLM grounding for university curriculum prerequisite question answering (Accepted at IEEE OMLET 2026).",
       icon: "Network",
     },
