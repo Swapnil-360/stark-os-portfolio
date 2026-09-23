@@ -3,8 +3,8 @@ import { HeroConfig, Project, Experience, Education, Service, SkillCategory, Soc
 export const INITIAL_HERO: HeroConfig = {
   label: "CREATIVE PROFESSIONAL",
   name: "SWAPNIL",
-  subtitle: "DEVELOPER / DESIGNER / CREATOR",
-  description: "Building modern digital experiences across web, apps, design and emerging technology. Focused on high-performance frontend systems, intelligent workflows, and cinematic interface architecture.",
+  subtitle: "PRODUCT DESIGNER & BUILDER",
+  description: "Turning Real-World Problems into Digital Products | AI, Frontend & Automation | Creator of Edu51Portal | Final year CSE at BUBT",
   ctaPrimaryText: "VIEW WORK",
   ctaPrimaryLink: "#projects",
   ctaSecondaryText: "CONTACT ME",
@@ -46,7 +46,7 @@ export const INITIAL_HERO: HeroConfig = {
 
 export const INITIAL_SETTINGS: SiteSettings = {
   title: "Md. Miftahur Rahman Swapnil | Cinematic Command Portfolio",
-  description: "Futuristic command interface and portfolio of Md. Miftahur Rahman Swapnil — Frontend Developer, Creative Technologist, and UI/UX Designer.",
+  description: "Portfolio of Md. Miftahur Rahman Swapnil — Product Designer & Builder | Turning Real-World Problems into Digital Products | AI, Frontend & Automation | Creator of Edu51Portal | Final year CSE at BUBT",
   author: "Md. Miftahur Rahman Swapnil",
   availability: "AVAILABLE FOR HIRE & FREELANCE",
   email: "miftahurr503@gmail.com",
@@ -60,6 +60,48 @@ export const INITIAL_SETTINGS: SiteSettings = {
 };
 
 export const INITIAL_PROJECTS: Project[] = [
+  {
+    id: "proj-curricurag",
+    slug: "curricurag",
+    title: "CurricuRAG",
+    subtitle: "Relation-Aware Curriculum Knowledge Graph Retrieval & QA (IEEE OMLET 2026)",
+    category: "ai",
+    categoryLabel: "AI & Knowledge Graphs",
+    shortDescription: "Curriculum Knowledge Graph-enhanced RAG system using 2-layer Relational Graph Convolutional Networks (R-GCN) and local LLMs for prerequisite reasoning with zero query-time LLM overhead.",
+    fullDescription: "CurricuRAG bridges graph neural network retrieval with locally deployed instruction-tuned LLMs (Qwen2.5-7B-Instruct 4-bit NF4) over a Neo4j-verified curriculum knowledge graph of 418 nodes and 558 typed edges. Accepted with Minor Revision at 2026 IEEE International Conference on Optics, Machine Learning and Emerging Technology (OMLET, Nairobi, Kenya).",
+    problem: "Standard dense text RAG and closed-book LLMs struggle with multi-hop prerequisite paths and hallucinate false prerequisites when navigating complex academic curriculum dependencies.",
+    solution: "Engineered a 2-layer R-GCN encoder with 384-d Sentence-BERT node embeddings and DistMult decoder to rank prerequisite triples, followed by constrained grounded fact-list generation.",
+    role: "Undergraduate Researcher & Core Author",
+    status: "Completed",
+    heroImage: "/images/projects/opusgen.jpg",
+    gallery: [
+      "/images/projects/opusgen.jpg",
+      "/images/projects/opusgen_real.png"
+    ],
+    technologies: [
+      "PyTorch",
+      "Relational GCN",
+      "Neo4j",
+      "Qwen2.5-7B",
+      "Sentence-BERT",
+      "Python",
+      "IEEE Xplore"
+    ],
+    githubUrl: "https://github.com/Swapnil-360",
+    featured: true,
+    displayOrder: 2,
+    year: "2026",
+    keyFeatures: [
+      "418-node, 558-edge curriculum knowledge graph verified in Neo4j",
+      "2-layer Relational GCN (R-GCN) with DistMult decoder for relation-aware scoring",
+      "Zero query-time LLM retriever calls (high throughput, no LLM fine-tuning needed)",
+      "45.5% exact-set match vs 22.7% text-RAG and 12.7% closed-book LLM",
+      "100% correct abstention rate (24/24) on unanswerable questions",
+      "Accepted at 2026 IEEE OMLET (Nairobi, Kenya; Paper ID: 1017)"
+    ],
+    challenges: "Preventing knowledge leakage across cross-validation splits and ensuring deterministic grounding to eliminate hallucination.",
+    outcome: "Achieved 37.7% structural generalization on unseen triples (vs 3%-5% baselines) and secured IEEE international conference acceptance.",
+  },
   {
     id: "proj-1",
     slug: "opusgen-ai",
@@ -488,6 +530,11 @@ export const INITIAL_EDUCATION: Education = {
     "Computer Networks"
   ],
   researchInterests: [
+    {
+      title: "CurricuRAG: Curriculum Knowledge-Graph Enhanced RAG",
+      description: "Relation-aware graph retrieval with 2-layer R-GCN and local LLM grounding for university curriculum prerequisite question answering (Accepted at IEEE OMLET 2026).",
+      icon: "Network",
+    },
     {
       title: "Design Systems & Component Architecture",
       description: "Engineering scalable, resilient, and accessible UI component libraries for modern distributed web applications.",
