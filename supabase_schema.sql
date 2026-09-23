@@ -424,7 +424,7 @@ INSERT INTO public.projects (
     '/images/projects/prince.jpg',
     true,
     6,
-    'Prince Varman - Expert in crypto project support, digital marketing, web development, and creative design. Professional bespoke client portfolio engineered with high-conversion visual design, interactive service showcases, and modern responsive architecture.',
+    'Prince Barman - Expert in crypto project support, digital marketing, web development, and creative design. Professional bespoke client portfolio engineered with high-conversion visual design, interactive service showcases, and modern responsive architecture.',
     '#06b6d4',
     'https://www.sbprince.com/',
     'https://github.com/Swapnil-360/Myself_Prince.git',
