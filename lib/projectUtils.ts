@@ -26,6 +26,7 @@ export function getProjectThumbnail(
   // Intelligently map by slug, id, or title keywords
   const text = `${project.slug || ""} ${project.id || ""} ${project.title || ""}`.toLowerCase();
 
+  if (text.includes("mikasa")) return "/images/projects/mikasa.jpg";
   if (text.includes("opusgen")) return "/images/projects/opusgen.jpg";
   if (text.includes("mutebd")) return "/images/projects/mutebd.jpg";
   if (text.includes("escape")) return "/images/projects/escaperoom.jpg";
@@ -51,7 +52,9 @@ export function normalizeProjectCategory(
     text.includes("diffusion") ||
     text.includes("audio") ||
     text.includes("spectrogram") ||
-    text.includes("opusgen")
+    text.includes("opusgen") ||
+    text.includes("mikasa") ||
+    text.includes("n8n")
   ) {
     category = "ai";
   } else if (
@@ -147,7 +150,10 @@ export function matchProjectCategory(
       text.includes("ai") ||
       text.includes("opusgen") ||
       text.includes("audio") ||
-      text.includes("creative tech")
+      text.includes("creative tech") ||
+      text.includes("mikasa") ||
+      text.includes("n8n") ||
+      text.includes("automation")
     );
   }
   if (catId === "game") {
@@ -169,6 +175,11 @@ export function normalizeProjectLiveUrl(
 ): string | undefined {
   const raw = (url || "").trim();
   const text = `${raw} ${slug || ""} ${title || ""}`.toLowerCase();
+
+  // If this is Mikasa, ensure canonical domain is https://mikasa.mrswapnil.me/
+  if (text.includes("mikasa")) {
+    return "https://mikasa.mrswapnil.me/";
+  }
 
   // If this is OpusGen, ensure canonical domain is https://www.opusgenai.com/
   if (text.includes("opusgen")) {
@@ -203,6 +214,16 @@ export function sanitizeProjectData<T extends {
   id?: string;
 }>(proj: T): T {
   const text = `${proj.slug || ""} ${proj.title || ""} ${proj.id || ""}`.toLowerCase();
+
+  if (text.includes("mikasa")) {
+    return {
+      ...proj,
+      liveUrl: "https://mikasa.mrswapnil.me/",
+      githubUrl: "https://github.com/Swapnil-360/personal-ai-assistant",
+      heroImage: "/images/projects/mikasa.jpg",
+      gallery: ["/images/projects/mikasa.jpg", "/images/projects/mikasa_logo.jpg"],
+    };
+  }
 
   if (text.includes("prince")) {
     const isStaleAgro =
@@ -250,4 +271,3 @@ export function sanitizeProjectData<T extends {
 
   return proj;
 }
-

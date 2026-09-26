@@ -51,8 +51,8 @@ interface DataContextType {
 const DataContext = createContext<DataContextType | undefined>(undefined);
 
 const STORAGE_KEYS = {
-  HERO: "swapnil_hero_data_v6",
-  PROJECTS: "swapnil_projects_data_v5",
+  HERO: "swapnil_hero_data_v7",
+  PROJECTS: "swapnil_projects_data_v7",
   EXPERIENCES: "swapnil_experiences_data_v3",
   EDUCATION: "swapnil_education_data_v3",
   SERVICES: "swapnil_services_data_v3",
@@ -294,8 +294,15 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
         try {
           const { data } = await supabase.from("projects").select("*").order("display_order", { ascending: true });
           if (data && data.length > 0) {
-            setProjects(data.map(projectFromDb));
+            let mapped = data.map(projectFromDb);
+            const hasMikasa = mapped.some((p: any) => p.slug === "mikasa-ai-assistant" || p.id === "proj-mikasa-ai" || p.title?.toLowerCase().includes("mikasa"));
+            if (!hasMikasa) {
+              const mikasaInitial = INITIAL_PROJECTS.find(p => p.id === "proj-mikasa-ai" || p.slug === "mikasa-ai-assistant");
+              if (mikasaInitial) mapped = [mikasaInitial, ...mapped];
+            }
+            setProjects(mapped);
             dbLoaded = true;
+            try { localStorage.setItem(STORAGE_KEYS.PROJECTS, JSON.stringify(mapped)); } catch {}
 
             // Self-heal OpusGen live URL if stale in Supabase database
             const staleOpus = data.find((p: any) =>
