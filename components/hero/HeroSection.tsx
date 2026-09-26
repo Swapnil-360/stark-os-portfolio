@@ -146,15 +146,27 @@ export default function HeroSection() {
                 </span>
               </div>
 
-              {/* Large Name with Sci-Fi Accent */}
-              <div>
-                <h1 className="font-display font-black text-5xl sm:text-6xl lg:text-7xl xl:text-8xl tracking-tight leading-none text-foreground uppercase">
-                  {hero.name || "SWAPNIL"}
-                  <span className="text-accent inline-block animate-pulse ml-1">_</span>
+              {/* Signature Style Name Composition (Image-2 Style) */}
+              <div className="space-y-1">
+                {/* "Hi, I'm" + Signature "Swapnil" */}
+                <div className="flex items-baseline flex-wrap gap-x-4 gap-y-1">
+                  <span className="text-3xl sm:text-4xl lg:text-5xl font-sans font-light text-foreground/80 tracking-tight">
+                    Hi, I&apos;m
+                  </span>
+                  <span className="font-signature text-6xl sm:text-7xl lg:text-8xl xl:text-9xl text-white font-normal tracking-wide drop-shadow-[0_2px_25px_rgba(255,255,255,0.35)] select-none">
+                    Swapnil
+                  </span>
+                </div>
+
+                {/* New Line: Full Name */}
+                <h1 className="font-display font-extrabold text-2xl sm:text-3xl lg:text-4xl text-foreground tracking-tight uppercase pt-1">
+                  {hero.fullName || "Md. Miftahur Rahman Swapnil"}
                 </h1>
-                <div className="font-mono text-sm sm:text-base lg:text-lg text-accent tracking-widest uppercase font-bold mt-2 flex items-center gap-2">
-                  <Terminal className="w-4 h-4 text-accent" />
-                  <span>{hero.subtitle || "DEVELOPER / DESIGNER / CREATOR"}</span>
+
+                {/* Role based on LinkedIn */}
+                <div className="font-sans font-semibold text-sm sm:text-base lg:text-lg text-accent tracking-wide pt-1 flex items-start sm:items-center gap-2">
+                  <span className="text-accent/60 font-mono text-xs hidden sm:inline">&gt;&gt;</span>
+                  <span>{hero.subtitle || "Product Designer & Builder | Turning Real-World Problems into Digital Products | AI, Frontend & Automation"}</span>
                 </div>
               </div>
 

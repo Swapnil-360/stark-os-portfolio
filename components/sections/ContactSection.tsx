@@ -310,6 +310,23 @@ export default function ContactSection() {
                     >
                       {status === "submitting" ? "DISPATCHING PAYLOAD..." : "TRANSMIT MESSAGE"}
                     </HudButton>
+                                    </div>
+
+                  {/* LinkedIn Professional Connection Callout */}
+                  <div className="pt-3 border-t border-hud/40 flex items-center justify-between text-xs font-mono text-muted">
+                    <span className="flex items-center gap-1.5">
+                      <Linkedin className="w-3.5 h-3.5 text-blue-400" />
+                      <span>Prefer professional messaging?</span>
+                    </span>
+                    <a
+                      href="https://www.linkedin.com/in/mr-swapnil/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-400 hover:text-blue-300 font-semibold underline underline-offset-2 flex items-center gap-1 transition-colors"
+                    >
+                      <span>Connect on LinkedIn</span>
+                      <span>&gt;&gt;</span>
+                    </a>
                   </div>
                 </form>
               )}

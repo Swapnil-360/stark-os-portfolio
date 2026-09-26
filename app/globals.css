@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Orbitron:wght@500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Alex+Brush&family=Great+Vibes&family=Inter:wght@300;400;500;600;700&family=Orbitron:wght@500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -8,6 +8,7 @@
   --font-inter: 'Inter', sans-serif;
   --font-space: 'Space Grotesk', sans-serif;
   --font-orbitron: 'Orbitron', monospace;
+  --font-signature: 'Great Vibes', 'Alex Brush', cursive;
 
   /* Default Theme: Obsidian Red */
   --accent: #ff1e38;
@@ -190,3 +191,9 @@ body {
   }
 }
 
+
+
+/* Signature font utility for personal branding */
+.font-signature {
+  font-family: var(--font-signature), 'Great Vibes', 'Alex Brush', cursive;
+}

@@ -1,10 +1,11 @@
 import { HeroConfig, Project, Experience, Education, Service, SkillCategory, SocialLink, SiteSettings, ThemeConfig } from '@/types/portfolio';
 
 export const INITIAL_HERO: HeroConfig = {
-  label: "CREATIVE PROFESSIONAL",
-  name: "SWAPNIL",
-  subtitle: "PRODUCT DESIGNER & BUILDER",
-  description: "Turning Real-World Problems into Digital Products | AI, Frontend & Automation | Creator of Edu51Portal | Final year CSE at BUBT",
+  label: "PRODUCT DESIGNER & BUILDER · AI · AUTOMATION",
+  name: "Swapnil",
+  fullName: "Md. Miftahur Rahman Swapnil",
+  subtitle: "Product Designer & Builder | Turning Real-World Problems into Digital Products | AI, Frontend & Automation",
+  description: "Product Designer & Builder with an innovative mindset, turning real-world problems into digital products. Crafting high-performance web applications, autonomous AI agents (Mikasa, n8n), and intelligent workflows. Creator of Edu51Portal | Final year CSE at BUBT.",
   ctaPrimaryText: "VIEW WORK",
   ctaPrimaryLink: "#projects",
   ctaSecondaryText: "CONTACT ME",
@@ -45,7 +46,7 @@ export const INITIAL_HERO: HeroConfig = {
 };
 
 export const INITIAL_SETTINGS: SiteSettings = {
-  title: "Md. Miftahur Rahman Swapnil | Cinematic Command Portfolio",
+  title: "Md. Miftahur Rahman Swapnil | Product Designer & Builder | Portfolio",
   description: "Portfolio of Md. Miftahur Rahman Swapnil — Product Designer & Builder | Turning Real-World Problems into Digital Products | AI, Frontend & Automation | Creator of Edu51Portal | Final year CSE at BUBT",
   author: "Md. Miftahur Rahman Swapnil",
   availability: "AVAILABLE FOR HIRE & FREELANCE",
@@ -53,10 +54,12 @@ export const INITIAL_SETTINGS: SiteSettings = {
   adminEmail: "miftahurr503@gmail.com",
   whatsapp: "+8801318090383",
   location: "Dhaka, Bangladesh",
-  systemVersion: "v4.2.0-STARK",
+  systemVersion: "v4.3.0-STARK",
   buildYear: "2026",
   coordinates: "23.8103° N, 90.4125° E",
   resumeUrl: "/resume.pdf",
+  linkedinUrl: "https://www.linkedin.com/in/mr-swapnil/",
+  githubUrl: "https://github.com/Swapnil-360",
 };
 
 export const INITIAL_PROJECTS: Project[] = [
@@ -444,48 +447,50 @@ export const INITIAL_SERVICES: Service[] = [
 
 export const INITIAL_SKILL_CATEGORIES: SkillCategory[] = [
   {
-    category: "Frontend & Core",
+    category: "AI, Agents & Automation",
     skills: [
-      { name: "React.js", highlight: true },
-      { name: "Next.js", highlight: true },
+      { name: "n8n Workflow Automation", highlight: true },
+      { name: "Autonomous AI Agents", highlight: true },
+      { name: "Multi-LLM Orchestration (Gemini & OpenRouter)", highlight: true },
+      { name: "Supabase pgvector & Long-term Memory", highlight: true },
+      { name: "Claude AI & Cursor IDE", highlight: true },
+      { name: "Knowledge Graphs & RAG (Neo4j)", highlight: false },
+      { name: "Prompt Engineering & Context Routing", highlight: false }
+    ]
+  },
+  {
+    category: "Frontend & Web Architecture",
+    skills: [
+      { name: "Next.js 14/15 (App Router)", highlight: true },
+      { name: "React 18/19", highlight: true },
       { name: "TypeScript", highlight: true },
       { name: "Tailwind CSS", highlight: true },
       { name: "Framer Motion", highlight: true },
-      { name: "HTML5 / Modern CSS", highlight: false },
-      { name: "JavaScript (ES6+)", highlight: false }
+      { name: "JavaScript (ES6+)", highlight: false },
+      { name: "HTML5 / Modern CSS", highlight: false }
     ]
   },
   {
-    category: "Backend & Platform",
+    category: "Backend, Cloud & Automation",
     skills: [
-      { name: "Supabase", highlight: true },
-      { name: "Firebase", highlight: false },
-      { name: "REST APIs", highlight: true },
-      { name: "Authentication (OAuth)", highlight: false },
-      { name: "PostgreSQL / MySQL", highlight: false },
-      { name: "Vercel / Netlify", highlight: true }
-    ]
-  },
-  {
-    category: "AI & Developer Tools",
-    skills: [
-      { name: "n8n Automation", highlight: true },
-      { name: "Cursor IDE", highlight: true },
-      { name: "Claude AI", highlight: true },
-      { name: "VS Code", highlight: false },
+      { name: "Node.js & Express", highlight: true },
+      { name: "Telegram Bot API", highlight: true },
+      { name: "Supabase (PostgreSQL & RLS)", highlight: true },
+      { name: "REST APIs & Webhooks", highlight: true },
       { name: "Git & GitHub", highlight: true },
-      { name: "npm / Postman", highlight: false }
+      { name: "Vercel / Netlify Deployments", highlight: false },
+      { name: "Firebase Realtime DB", highlight: false }
     ]
   },
   {
-    category: "Design & Motion",
+    category: "Product Design & Motion",
     skills: [
-      { name: "Figma", highlight: true },
-      { name: "Adobe Photoshop", highlight: false },
+      { name: "Figma (Design Systems)", highlight: true },
+      { name: "UI/UX Prototyping", highlight: true },
       { name: "CapCut Pro", highlight: true },
+      { name: "Adobe Photoshop", highlight: false },
       { name: "Adobe Premiere Pro", highlight: false },
-      { name: "Canva Pro", highlight: false },
-      { name: "UI/UX Prototyping", highlight: true }
+      { name: "Canva Pro", highlight: false }
     ]
   }
 ];
@@ -601,19 +606,19 @@ export const INITIAL_EDUCATION: Education = {
 
 export const INITIAL_SOCIAL_LINKS: SocialLink[] = [
   {
-    id: "soc-email",
-    platform: "Email",
-    url: "https://mail.google.com/mail/?view=cm&fs=1&to=miftahurr503@gmail.com",
-    icon: "Mail",
-    label: "Open Gmail Inbox",
-    highlight: true
-  },
-  {
     id: "soc-linkedin",
     platform: "LinkedIn",
     url: "https://www.linkedin.com/in/mr-swapnil/",
     icon: "Linkedin",
     label: "linkedin.com/in/mr-swapnil",
+    highlight: true
+  },
+  {
+    id: "soc-email",
+    platform: "Email",
+    url: "https://mail.google.com/mail/?view=cm&fs=1&to=miftahurr503@gmail.com",
+    icon: "Mail",
+    label: "Open Gmail Inbox",
     highlight: true
   },
   {
@@ -633,18 +638,18 @@ export const INITIAL_SOCIAL_LINKS: SocialLink[] = [
     highlight: true
   },
   {
-    id: "soc-x",
-    platform: "X (Twitter)",
-    url: "https://x.com/thomascryptoxx",
-    icon: "Twitter",
-    label: "@thomascryptoxx"
-  },
-  {
     id: "soc-telegram",
     platform: "Telegram",
     url: "https://t.me/swapnil360",
     icon: "Send",
     label: "@swapnil360"
+  },
+  {
+    id: "soc-x",
+    platform: "X (Twitter)",
+    url: "https://x.com/thomascryptoxx",
+    icon: "Twitter",
+    label: "@thomascryptoxx"
   },
   {
     id: "soc-facebook",

@@ -34,6 +34,7 @@ const config: Config = {
         sans: ["var(--font-inter)", "Inter", "sans-serif"],
         display: ["var(--font-space)", "Space Grotesk", "sans-serif"],
         mono: ["var(--font-orbitron)", "Orbitron", "ui-monospace", "monospace"],
+        signature: ["var(--font-signature)", "Great Vibes", "Alex Brush", "cursive"],
       },
       boxShadow: {
         "hud-glow": "0 0 25px -5px var(--accent-glow)",

@@ -736,23 +736,45 @@ export default function CleanGlassPortfolio() {
           <div className="w-full max-w-7xl mx-auto my-auto grid lg:grid-cols-12 gap-6 sm:gap-8 lg:gap-14 items-center animate-in fade-in duration-500 py-3 sm:py-0">
             {/* Left Column: Headline, Bio & Action Buttons */}
             <div className="lg:col-span-7 flex flex-col justify-center space-y-4 sm:space-y-6">
-              {/* Status Pill Badge */}
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-white/15 bg-black/40 backdrop-blur-md text-xs font-mono tracking-wider text-emerald-400 font-semibold w-fit shadow-md">
-                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                <span>AVAILABLE FOR HIRE</span>
+              {/* Image-2 Style Hero Introduction */}
+              <div className="space-y-3">
+                {/* Status Pill Badge & Categories */}
+                <div className="flex flex-wrap items-center gap-2.5">
+                  <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-emerald-500/30 bg-emerald-500/10 backdrop-blur-md text-xs font-mono tracking-wider text-emerald-400 font-semibold w-fit shadow-md">
+                    <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                    <span>AVAILABLE FOR HIRE</span>
+                  </div>
+                  <span className="text-white/40 text-xs font-mono hidden sm:inline">•</span>
+                  <span className="text-[11px] sm:text-xs md:text-sm font-mono uppercase tracking-widest text-accent font-bold">
+                    PRODUCT DESIGNER &amp; BUILDER · AI · AUTOMATION
+                  </span>
+                </div>
+
+                {/* "Hi, I'm" + Signature "Swapnil" */}
+                <div className="flex items-baseline flex-wrap gap-x-3.5 gap-y-1 pt-1">
+                  <span className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-light text-white/85 font-sans tracking-tight">
+                    Hi, I&apos;m
+                  </span>
+                  <span className="font-signature text-6xl sm:text-7xl md:text-8xl lg:text-[5.5rem] xl:text-[6rem] text-white font-normal tracking-wide drop-shadow-[0_2px_30px_rgba(255,255,255,0.4)] select-none">
+                    Swapnil
+                  </span>
+                </div>
+
+                {/* New Line: Full Name */}
+                <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-black text-white tracking-tight uppercase leading-tight">
+                  Md. Miftahur Rahman Swapnil
+                </h1>
+
+                {/* Role based on LinkedIn */}
+                <div className="text-xs sm:text-sm md:text-base lg:text-lg font-semibold text-accent tracking-wide font-sans leading-snug">
+                  Product Designer &amp; Builder | Turning Real-World Problems into Digital Products | AI, Frontend &amp; Automation
+                </div>
+
+                {/* Short Description */}
+                <p className="text-gray-300 text-xs sm:text-sm md:text-base leading-relaxed max-w-2xl font-normal drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)] pt-1">
+                  Product Designer &amp; Builder with an innovative mindset, turning real-world problems into digital products. Crafting high-performance web applications, autonomous AI agents (<span className="text-white font-semibold">Mikasa</span>, <span className="text-white font-semibold">n8n</span>), and intelligent workflows. Creator of <span className="text-white font-semibold">Edu51Portal</span> | Final year CSE at BUBT.
+                </p>
               </div>
-
-              {/* Bold Headline */}
-              <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-[4rem] xl:text-[4.5rem] font-black text-white tracking-tight leading-[1.1]">
-                Building Fast,<br />
-                Reliable <span className="text-accent drop-shadow-[0_0_30px_rgba(255,30,56,0.45)]">Web</span><br />
-                <span className="text-accent drop-shadow-[0_0_30px_rgba(255,30,56,0.45)]">Experiences.</span>
-              </h1>
-
-              {/* Narrative Bio */}
-              <p className="text-gray-300 text-xs sm:text-base md:text-lg leading-relaxed max-w-xl font-normal drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
-                Frontend Developer specializing in modern web and mobile applications. I use an AI-assisted workflow — Claude, ChatGPT, and Cursor — to build and ship faster.
-              </p>
 
               {/* Action Buttons Row */}
               <div className="flex flex-wrap items-center gap-3 pt-2">
@@ -893,7 +915,7 @@ export default function CleanGlassPortfolio() {
                   About <span className="text-accent">Swapnil</span>
                 </h2>
                 <p className="text-xs text-gray-400 mt-0.5">
-                  BUBT CSE • Frontend & Creative Technologist
+                  Product Designer & Builder • AI, Frontend & Automation
                 </p>
               </div>
               <button
@@ -913,7 +935,7 @@ export default function CleanGlassPortfolio() {
                     I am <span className="text-accent font-bold">Md. Miftahur Rahman Swapnil</span>, a developer studying Computer Science & Engineering at BUBT (Dhaka, Bangladesh).
                   </p>
                   <p className="text-gray-300 text-xs sm:text-sm leading-relaxed">
-                    I specialize in building high-performance web applications and mobile platforms using an AI-assisted workflow — Claude, ChatGPT, and Cursor. I collaborate transparently on GitHub, design intuitive interfaces in Figma, and deploy seamlessly on Vercel and Netlify.
+                    Product Designer & Builder with an innovative and curious mindset, always exploring new ideas, technologies, and ways to turn them into working products. I specialize in building high-performance web applications and autonomous AI agents (Mikasa, n8n, Supabase pgvector) using modern AI-assisted engineering. Creator of Edu51Portal, final year CSE at BUBT.
                   </p>
                 </div>
 
@@ -1604,7 +1626,24 @@ export default function CleanGlassPortfolio() {
                       </button>
                     </>
                   )}
-                </form>
+                
+                  {/* LinkedIn Professional Connection Callout */}
+                  <div className="pt-3 border-t border-white/10 flex items-center justify-between text-xs text-gray-400">
+                    <span className="flex items-center gap-1.5">
+                      <Linkedin className="w-3.5 h-3.5 text-blue-400" />
+                      <span>Prefer professional messaging?</span>
+                    </span>
+                    <a
+                      href="https://www.linkedin.com/in/mr-swapnil/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-400 hover:text-blue-300 font-semibold underline underline-offset-2 flex items-center gap-1 transition-colors"
+                    >
+                      <span>Connect on LinkedIn</span>
+                      <span>→</span>
+                    </a>
+                  </div>
+</form>
               </div>
             </div>
           </div>

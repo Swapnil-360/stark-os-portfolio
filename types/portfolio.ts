@@ -31,6 +31,8 @@ export interface BackgroundVideo {
 export interface HeroConfig {
   label: string;
   name: string;
+  fullName?: string;
+  roleHeadline?: string;
   subtitle: string;
   description: string;
   ctaPrimaryText: string;
@@ -154,5 +156,7 @@ export interface SiteSettings {
   buildYear: string;
   coordinates: string;
   adminEmail?: string;
+  linkedinUrl?: string;
+  githubUrl?: string;
   resumeUrl?: string;
 }

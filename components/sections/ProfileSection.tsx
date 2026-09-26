@@ -41,11 +41,11 @@ export default function ProfileSection() {
               </div>
 
               <p className="text-foreground/90 text-base sm:text-lg leading-relaxed font-normal">
-                I am <span className="text-accent font-semibold">Md. Miftahur Rahman Swapnil</span>, a developer and creative technologist based in Dhaka, Bangladesh. Currently pursuing my BSc in Computer Science & Engineering at Bangladesh University of Business and Technology (BUBT).
+                I am <span className="text-accent font-semibold">Md. Miftahur Rahman Swapnil</span>, a Product Designer & Builder based in Dhaka, Bangladesh. Currently pursuing my BSc in Computer Science & Engineering at Bangladesh University of Business and Technology (BUBT).
               </p>
 
               <p className="text-muted text-base leading-relaxed">
-                My work spans modern web and mobile applications, human-centered UI/UX systems, and creative digital media. Rather than building generic solutions, I focus on crafting software that feels responsive, reliable, and visually distinctive.
+                I have an innovative and curious mindset, turning real-world problems into working digital products. My work spans modern web and mobile applications, autonomous AI agents (Mikasa, n8n, Supabase pgvector), and creative digital products. Rather than building generic solutions, I focus on crafting software that feels responsive, reliable, and visually distinctive.
               </p>
 
               <p className="text-muted text-base leading-relaxed">
@@ -122,7 +122,7 @@ export default function ProfileSection() {
                 </div>
                 <div className="py-2.5 flex justify-between items-center">
                   <span className="text-muted uppercase">Primary Role</span>
-                  <span className="text-accent font-semibold">Frontend & Creative Dev</span>
+                  <span className="text-accent font-semibold">Product Designer & Builder</span>
                 </div>
                 <div className="py-2.5 flex justify-between items-center">
                   <span className="text-muted uppercase">Base Location</span>
