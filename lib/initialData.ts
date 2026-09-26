@@ -61,6 +61,51 @@ export const INITIAL_SETTINGS: SiteSettings = {
 
 export const INITIAL_PROJECTS: Project[] = [
   {
+    id: "proj-mikasa-ai",
+    slug: "mikasa-ai-assistant",
+    title: "Mikasa — Personal AI Assistant",
+    subtitle: "Autonomous AI Companion, Workflow Engine & Command Layer Powered by n8n",
+    category: "ai",
+    categoryLabel: "AI & Automation",
+    shortDescription: "Personal autonomous AI assistant and operating layer built with n8n workflow automation, multi-turn conversational memory, Telegram bridge, and continuous cloud-to-local synchronization.",
+    fullDescription: "Mikasa serves as Md. Miftahur Rahman Swapnil's dedicated executive AI companion and personal operating layer. Powered by an event-driven n8n workflow orchestration engine, Supabase cognitive memory, and high-speed multi-model failover (Gemini 2.5 Flash Lite + OpenRouter), Mikasa seamlessly connects Telegram messaging with local PC actions, quote-aware context retention, real-time web control, and autonomous task automation.",
+    problem: "Managing high-velocity communication, daily research, job hunting, and computer tasks across fragmented tools created cognitive overhead and context switching without a persistent, devoted autonomous executive layer.",
+    solution: "Engineered an end-to-end autonomous assistant architecture pairing visual n8n workflow pipelines with a 24/7 Node.js daemon bridge, Supabase PostgreSQL vector memory, quote-aware multi-turn Telegram bot interface, and a cyberpunk command center dashboard.",
+    role: "System Architect & Lead Developer",
+    status: "Live",
+    heroImage: "/images/projects/mikasa.jpg",
+    gallery: [
+      "/images/projects/mikasa.jpg",
+      "/images/projects/mikasa_logo.jpg"
+    ],
+    technologies: [
+      "n8n",
+      "Node.js",
+      "Telegram Bot API",
+      "Supabase",
+      "Gemini 2.5 Flash Lite",
+      "OpenRouter API",
+      "TypeScript",
+      "Tailwind CSS",
+      "REST Webhooks"
+    ],
+    liveUrl: "https://mikasa.mrswapnil.me/",
+    githubUrl: "https://github.com/Swapnil-360/personal-ai-assistant",
+    featured: true,
+    displayOrder: 1,
+    year: "2026",
+    keyFeatures: [
+      "n8n visual workflow orchestration for event routing, autonomous task queues, and LLM agent pipelines",
+      "Quote-aware multi-turn conversational memory with seamless Telegram reply context understanding",
+      "Persistent Supabase cognitive memory vault with conflict-free foreign-key conversation indexing",
+      "Dual-mode cloud webhook & local PC bridge daemon enabling 24/7 autonomous parity",
+      "High-speed multi-LLM failover engine balancing Google Gemini 2.5 Flash Lite and OpenRouter models",
+      "Responsive cyberpunk executive command center with live status diagnostics and audio voice synthesis"
+    ],
+    challenges: "Achieving zero-latency multi-turn context retention across Telegram quotes, maintaining reliable bidirectional cloud-to-local execution bridges, and ensuring continuous LLM uptime via automated fallback mechanisms.",
+    outcome: "Successfully deployed and operating 24/7 at mikasa.mrswapnil.me and Telegram, serving as Swapnil's real-world autonomous copilot and executive task engine.",
+  },
+  {
     id: "proj-curricurag",
     slug: "curricurag",
     title: "Relation-Aware Graph Retrieval over a Curriculum Knowledge Graph for Prerequisite QA",
@@ -424,6 +469,7 @@ export const INITIAL_SKILL_CATEGORIES: SkillCategory[] = [
   {
     category: "AI & Developer Tools",
     skills: [
+      { name: "n8n Automation", highlight: true },
       { name: "Cursor IDE", highlight: true },
       { name: "Claude AI", highlight: true },
       { name: "VS Code", highlight: false },
